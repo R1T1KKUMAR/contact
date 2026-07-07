@@ -4,7 +4,6 @@ import Footer from './components/Footer.jsx';
 import Logo from './components/Logo.jsx';
 import Reveal from './components/Reveal.jsx';
 import SocialLinks from './components/SocialLinks.jsx';
-import Ticker from './components/Ticker.jsx';
 import ThemeToggle from './components/ThemeToggle.jsx';
 import { CONTACT } from './config/contact.js';
 
@@ -58,77 +57,38 @@ export default function App() {
   return (
     <div className="page">
       <header className="header">
-        <div className="container container--edge header__inner">
-          <div className="brand" aria-label="Site brand">
-            <Logo size={20} className="brand__logo" title="Connect" />
-            <div className="brand__text">Connect</div>
+        <div className="container header__inner">
+          <div className="header__brand">
+            <Logo size={22} className="header__logo" />
+            <span className="header__name">Ritik Kumar</span>
           </div>
-
-          <div className="header__marquee">
-            <Ticker
-              text="Open to opportunities &bull; Fast replies &bull; Clean, modern builds"
-              speedSeconds={110}
-              className="ticker--header"
-            />
-          </div>
-
-          <div className="header__actions">
-            <ThemeToggle theme={theme} setTheme={setTheme} />
-          </div>
+          <ThemeToggle theme={theme} setTheme={setTheme} />
         </div>
       </header>
 
       <section className="hero">
-        <div className="hero-glow" aria-hidden="true" />
-        <div className="hero-glow hero-glow--two" aria-hidden="true" />
         <div className="container">
-          <span className="hero__prompt" aria-hidden="true">$</span>
-          <h1 className="hero__title">Hello, I&rsquo;m {CONTACT.name}</h1>
-          <p className="hero__tagline">
-            {heroTitle}
-            <span className="cursor" aria-hidden="true" />
-          </p>
-
-          <div className="glow-dots" aria-hidden="true">
-            {Array.from({ length: 5 }, (_, i) => (
-              <span key={i} className="glow-dot" />
-            ))}
-          </div>
-
-          <div className="hero__actions">
-            <a className="btn btn--primary" href="#message">
-              Send a message
-            </a>
-            <a className="btn" href={`mailto:${CONTACT.email}`}>
-              Email directly
-            </a>
-          </div>
+          <h1 className="hero__title">
+            {CONTACT.name}
+            <span className="hero__mark" aria-hidden="true" />
+          </h1>
+          <p className="hero__tagline">{heroTitle}</p>
         </div>
       </section>
 
-      <section className="skills-rail">
-        <div className="container">
-          <div className="skills-rail__inner">
-            {CONTACT.skills.map((skill) => (
-              <span key={skill} className="skill-chip">{skill}</span>
-            ))}
-          </div>
-        </div>
-      </section>
+      <div className="section-divider" aria-hidden="true">
+        <hr className="section-divider__rule" />
+      </div>
 
       <main className="container grid">
         <section className="stack stack--sticky">
           <Reveal delayMs={0}>
             <ContactCard contact={CONTACT} />
           </Reveal>
-
-          <Reveal delayMs={90}>
-            <SocialLinks links={CONTACT.socialLinks} />
-          </Reveal>
         </section>
 
         <section className="stack" id="message" ref={messageSectionRef}>
-          <Reveal delayMs={140}>
+          <Reveal delayMs={90}>
             {showContactForm ? (
               <Suspense fallback={<div className="card"><div className="card__inner"><div className="hint">Loading form&hellip;</div></div></div>}>
                 <ContactForm contact={CONTACT} />
@@ -143,6 +103,14 @@ export default function App() {
           </Reveal>
         </section>
       </main>
+
+      <section className="social-section">
+        <div className="container">
+          <Reveal delayMs={40}>
+            <SocialLinks links={CONTACT.socialLinks} />
+          </Reveal>
+        </div>
+      </section>
 
       <Footer contact={CONTACT} />
     </div>

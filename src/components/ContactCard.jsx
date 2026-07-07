@@ -29,7 +29,7 @@ export default function ContactCard({ contact }) {
 
           {contact.bio ? <p className="profile__bio">{contact.bio}</p> : null}
 
-          <div className="kv kv--compact" aria-label="Quick facts">
+          <div className="kv" aria-label="Quick facts">
             <div className="kv__row">
               <span className="kv__label">Email</span>
               <div className="row">
@@ -75,7 +75,7 @@ export default function ContactCard({ contact }) {
             </div>
           ) : null}
 
-          {(contact.website || contact.github || contact.resumeUrl) ? (
+          {(contact.website || contact.resumeUrl) ? (
             <div className="linkRow" aria-label="Links">
               {contact.website ? (
                 <a className="linkChip" href={contact.website} target="_blank" rel="noreferrer">
