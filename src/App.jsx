@@ -14,7 +14,6 @@ export default function App() {
   const [theme, setTheme] = useState(() => {
     const saved = localStorage.getItem('theme');
     if (saved === 'light' || saved === 'dark') return saved;
-    // Default is light mode unless the user explicitly chose otherwise.
     return document.documentElement.dataset.theme === 'dark' ? 'dark' : 'light';
   });
 
@@ -24,16 +23,11 @@ export default function App() {
   }, [theme]);
 
   const heroTitle = useMemo(() => {
-    return CONTACT.tagline || 'Let’s connect.';
-  }, []);
-
-  const heroSubtitle = useMemo(() => {
-    return 'Send a message with a bit of detail — I usually reply as soon as I can.';
+    return CONTACT.tagline || 'Let\'s connect.';
   }, []);
 
   const messageSectionRef = useRef(null);
   const [showContactForm, setShowContactForm] = useState(() => {
-    // If user lands directly on #message, render immediately.
     return typeof window !== 'undefined' && window.location?.hash === '#message';
   });
 
@@ -54,7 +48,6 @@ export default function App() {
           io.disconnect();
         }
       },
-      // Start loading before it's visible so it feels instant.
       { root: null, rootMargin: '500px 0px', threshold: 0.01 }
     );
 
@@ -67,13 +60,13 @@ export default function App() {
       <header className="header">
         <div className="container container--edge header__inner">
           <div className="brand" aria-label="Site brand">
-            <Logo size={20} className="brand__logo" title="Contact" />
-            <div className="brand__text">Contact</div>
+            <Logo size={20} className="brand__logo" title="Connect" />
+            <div className="brand__text">Connect</div>
           </div>
 
           <div className="header__marquee">
             <Ticker
-              text="Open to opportunities • Fast replies • Clean, modern builds"
+              text="Open to opportunities &bull; Fast replies &bull; Clean, modern builds"
               speedSeconds={110}
               className="ticker--header"
             />
@@ -83,20 +76,45 @@ export default function App() {
             <ThemeToggle theme={theme} setTheme={setTheme} />
           </div>
         </div>
+      </header>
 
-        <div className="container hero">
-          <div>
-            <h1 className="title">{heroTitle}</h1>
-            <p className="subtitle">{heroSubtitle}</p>
+      <section className="hero">
+        <div className="hero-glow" aria-hidden="true" />
+        <div className="hero-glow hero-glow--two" aria-hidden="true" />
+        <div className="container">
+          <span className="hero__prompt" aria-hidden="true">$</span>
+          <h1 className="hero__title">Hello, I&rsquo;m {CONTACT.name}</h1>
+          <p className="hero__tagline">
+            {heroTitle}
+            <span className="cursor" aria-hidden="true" />
+          </p>
 
-            <div className="hero__actions">
-              <a className="btn btn--primary" href="#message">
-                Send a message
-              </a>
-            </div>
+          <div className="glow-dots" aria-hidden="true">
+            {Array.from({ length: 5 }, (_, i) => (
+              <span key={i} className="glow-dot" />
+            ))}
+          </div>
+
+          <div className="hero__actions">
+            <a className="btn btn--primary" href="#message">
+              Send a message
+            </a>
+            <a className="btn" href={`mailto:${CONTACT.email}`}>
+              Email directly
+            </a>
           </div>
         </div>
-      </header>
+      </section>
+
+      <section className="skills-rail">
+        <div className="container">
+          <div className="skills-rail__inner">
+            {CONTACT.skills.map((skill) => (
+              <span key={skill} className="skill-chip">{skill}</span>
+            ))}
+          </div>
+        </div>
+      </section>
 
       <main className="container grid">
         <section className="stack stack--sticky">
@@ -112,7 +130,7 @@ export default function App() {
         <section className="stack" id="message" ref={messageSectionRef}>
           <Reveal delayMs={140}>
             {showContactForm ? (
-              <Suspense fallback={<div className="card"><div className="card__inner"><div className="hint">Loading form…</div></div></div>}>
+              <Suspense fallback={<div className="card"><div className="card__inner"><div className="hint">Loading form&hellip;</div></div></div>}>
                 <ContactForm contact={CONTACT} />
               </Suspense>
             ) : (
