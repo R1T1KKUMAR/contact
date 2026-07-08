@@ -2,9 +2,9 @@
 
 import { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { Send, CheckCircle2 } from "lucide-react";
+import { Send, CheckCircle2, AlertCircle } from "lucide-react";
 import ScrollReveal from "./ScrollReveal";
-import { SITE } from "@/config/site";
+import emailjs from "@emailjs/browser";
 
 export default function Contact() {
   const [formState, setFormState] = useState({
@@ -15,14 +15,42 @@ export default function Contact() {
     message: "",
   });
   const [submitted, setSubmitted] = useState(false);
+  const [error, setError] = useState("");
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    setSubmitted(true);
-    setTimeout(() => {
-      setSubmitted(false);
-      setFormState({ name: "", email: "", company: "", topic: "", message: "" });
-    }, 3000);
+    setError("");
+
+    const serviceId = process.env.NEXT_PUBLIC_EMAILJS_SERVICE_ID;
+    const templateId = process.env.NEXT_PUBLIC_EMAILJS_TEMPLATE_ID;
+    const publicKey = process.env.NEXT_PUBLIC_EMAILJS_PUBLIC_KEY;
+
+    if (!serviceId || !templateId || !publicKey) {
+      setError("Email service is not configured.");
+      return;
+    }
+
+    try {
+      await emailjs.send(
+        serviceId,
+        templateId,
+        {
+          from_name: formState.name,
+          reply_to: formState.email,
+          company: formState.company || "—",
+          topic: formState.topic,
+          message: formState.message,
+        },
+        publicKey,
+      );
+      setSubmitted(true);
+      setTimeout(() => {
+        setSubmitted(false);
+        setFormState({ name: "", email: "", company: "", topic: "", message: "" });
+      }, 3000);
+    } catch {
+      setError("Failed to send message. Please try again later.");
+    }
   };
 
   return (
@@ -164,6 +192,12 @@ export default function Contact() {
                       />
                     </div>
 
+                    {error && (
+                      <div className="flex items-center gap-2 text-sm text-[#EF4444] bg-[#EF4444]/10 px-4 py-2 rounded-lg">
+                        <AlertCircle size={14} />
+                        {error}
+                      </div>
+                    )}
                     <motion.button
                       type="submit"
                       whileHover={{ scale: 1.02 }}
