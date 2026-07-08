@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { Send, CheckCircle2, AlertCircle } from "lucide-react";
+import { Send, CheckCircle2, AlertCircle, Loader2 } from "lucide-react";
 import ScrollReveal from "./ScrollReveal";
 import emailjs from "@emailjs/browser";
 
@@ -15,11 +15,13 @@ export default function Contact() {
     message: "",
   });
   const [submitted, setSubmitted] = useState(false);
+  const [sending, setSending] = useState(false);
   const [error, setError] = useState("");
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setError("");
+    setSending(true);
 
     const serviceId = process.env.NEXT_PUBLIC_EMAILJS_SERVICE_ID;
     const templateId = process.env.NEXT_PUBLIC_EMAILJS_TEMPLATE_ID;
@@ -50,6 +52,8 @@ export default function Contact() {
       }, 3000);
     } catch {
       setError("Failed to send message. Please try again later.");
+    } finally {
+      setSending(false);
     }
   };
 
@@ -200,13 +204,23 @@ export default function Contact() {
                     )}
                     <motion.button
                       type="submit"
-                      whileHover={{ scale: 1.02 }}
-                      whileTap={{ scale: 0.98 }}
-                      className="group relative w-full py-3.5 bg-[#6366F1] text-[#FAFAFA] font-medium rounded-lg overflow-hidden transition-all duration-300 hover:shadow-[0_0_30px_rgba(99,102,241,0.3)] flex items-center justify-center gap-2"
+                      disabled={sending}
+                      whileHover={{ scale: sending ? 1 : 1.02 }}
+                      whileTap={{ scale: sending ? 1 : 0.98 }}
+                      className="group relative w-full py-3.5 bg-[#6366F1] text-[#FAFAFA] font-medium rounded-lg overflow-hidden transition-all duration-300 hover:shadow-[0_0_30px_rgba(99,102,241,0.3)] flex items-center justify-center gap-2 disabled:opacity-60 disabled:cursor-not-allowed"
                     >
                       <span className="relative z-10 flex items-center gap-2">
-                        Send Message
-                        <Send size={14} className="group-hover:translate-x-1 transition-transform" />
+                        {sending ? (
+                          <>
+                            <Loader2 size={14} className="animate-spin" />
+                            Sending...
+                          </>
+                        ) : (
+                          <>
+                            Send Message
+                            <Send size={14} className="group-hover:translate-x-1 transition-transform" />
+                          </>
+                        )}
                       </span>
                       <motion.div
                         className="absolute inset-0 bg-gradient-to-r from-[#5354E0] to-[#7C3AED] opacity-0 group-hover:opacity-100 transition-opacity duration-300"
