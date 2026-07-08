@@ -1,10 +1,17 @@
 "use client";
 
+import { useEffect, useState } from "react";
 import { motion } from "framer-motion";
 import { Star, GitFork, ExternalLink } from "lucide-react";
 import { GithubIcon } from "./Icons";
 import ScrollReveal from "./ScrollReveal";
 import { SITE } from "@/config/site";
+
+type ContributionDay = {
+  date: string;
+  count: number;
+  level: number;
+};
 
 const repos = [
   { name: "blog-writer-ai", stars: 0, forks: 0, language: "TypeScript", description: "AI-powered blog writing tool" },
@@ -15,7 +22,53 @@ const repos = [
   { name: "LMS", stars: 0, forks: 0, language: "HTML", description: "Learning Management System for Harrow School" },
 ];
 
+const levels = ["#1C1C1C", "#0E4429", "#006D32", "#26A641", "#39D353"];
+
+function groupByWeek(contributions: ContributionDay[]) {
+  const weeks: ContributionDay[][] = [];
+  let current: ContributionDay[] = [];
+  const sorted = [...contributions].sort(
+    (a, b) => new Date(a.date).getTime() - new Date(b.date).getTime()
+  );
+
+  const first = new Date(sorted[0]?.date || Date.now());
+  const padStart = first.getDay();
+
+  for (let i = 0; i < padStart; i++) {
+    current.push({ date: "", count: 0, level: 0 });
+  }
+
+  for (const day of sorted) {
+    current.push(day);
+    if (current.length === 7) {
+      weeks.push(current);
+      current = [];
+    }
+  }
+  if (current.length > 0) weeks.push(current);
+  return weeks;
+}
+
 export default function GitHubActivity() {
+  const [contributions, setContributions] = useState<ContributionDay[]>([]);
+  const [totalContributions, setTotalContributions] = useState(0);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    fetch(`https://github-contributions-api.jogruber.de/v2/${SITE.github.split("/").pop()}`)
+      .then((r) => r.json())
+      .then((data) => {
+        const all: ContributionDay[] = data.contributions || [];
+        setContributions(all);
+        const total = all.reduce((s: number, c: ContributionDay) => s + c.count, 0);
+        setTotalContributions(total);
+      })
+      .catch(() => {})
+      .finally(() => setLoading(false));
+  }, []);
+
+  const weeks = groupByWeek(contributions);
+
   return (
     <section className="relative py-32">
       <div className="mx-auto max-w-7xl px-6">
@@ -40,34 +93,41 @@ export default function GitHubActivity() {
           <div className="p-6 rounded-xl border border-[rgba(255,255,255,0.06)] bg-[#111827]/50 mb-8 overflow-x-auto">
             <h3 className="text-sm font-semibold text-[#FAFAFA] mb-4 flex items-center gap-2">
               <GithubIcon size={16} className="text-[#6366F1]" />
-              Contribution Activity
+              {loading ? "Contribution Activity" : `${totalContributions.toLocaleString()} contributions in the last year`}
             </h3>
-            <div className="flex gap-[3px]">
-              <div className="flex flex-col gap-[3px] mr-[3px]">
-                {["Mon", "", "Wed", "", "Fri", "", ""].map((d, i) => (
-                  <div key={i} className="w-[10px] h-[10px] text-[6px] text-[#94A3B8] leading-[10px] text-center">
-                    {d}
+            {loading ? (
+              <div className="flex gap-[3px] opacity-30">
+                {Array.from({ length: 51 }).map((_, week) => (
+                  <div key={week} className="flex flex-col gap-[3px]">
+                    {Array.from({ length: 7 }).map((_, day) => (
+                      <div key={day} className="w-[10px] h-[10px] rounded-[2px] bg-[#1C1C1C]" />
+                    ))}
                   </div>
                 ))}
               </div>
-              {Array.from({ length: 51 }).map((_, week) => (
-                <div key={week} className="flex flex-col gap-[3px]">
-                  {Array.from({ length: 7 }).map((_, day) => {
-                    const idx = week * 7 + day;
-                    const hash = ((idx * 16807 + 12345) % 2147483647) / 2147483647;
-                    const levels = ["#1C1C1C", "#0E4429", "#006D32", "#26A641", "#39D353"];
-                    const level = hash < 0.45 ? 0 : hash < 0.65 ? 1 : hash < 0.78 ? 2 : hash < 0.9 ? 3 : 4;
-                    return (
-                      <div
-                        key={day}
-                        className="w-[10px] h-[10px] rounded-[2px]"
-                        style={{ backgroundColor: levels[level] }}
-                      />
-                    );
-                  })}
+            ) : (
+              <div className="flex gap-[3px]">
+                <div className="flex flex-col gap-[3px] mr-[3px]">
+                  {["Mon", "", "Wed", "", "Fri", "", ""].map((d, i) => (
+                    <div key={i} className="w-[10px] h-[10px] text-[6px] text-[#94A3B8] leading-[10px] text-center">
+                      {d}
+                    </div>
+                  ))}
                 </div>
-              ))}
-            </div>
+                {weeks.map((week, wi) => (
+                  <div key={wi} className="flex flex-col gap-[3px]">
+                    {week.map((day, di) => (
+                      <div
+                        key={di}
+                        className="w-[10px] h-[10px] rounded-[2px]"
+                        style={{ backgroundColor: levels[day.level] || levels[0] }}
+                        title={day.date ? `${day.date}: ${day.count} contributions` : ""}
+                      />
+                    ))}
+                  </div>
+                ))}
+              </div>
+            )}
           </div>
         </ScrollReveal>
 
@@ -75,7 +135,7 @@ export default function GitHubActivity() {
           {repos.map((repo, i) => (
             <ScrollReveal key={repo.name} delay={i * 0.08}>
               <motion.a
-                href={SITE.github}
+                href={`${SITE.github}/${repo.name}`}
                 target="_blank"
                 rel="noopener noreferrer"
                 whileHover={{ x: 4 }}
