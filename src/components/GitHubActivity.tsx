@@ -55,13 +55,13 @@ export default function GitHubActivity() {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    fetch(`https://github-contributions-api.jogruber.de/v2/${SITE.github.split("/").pop()}`)
+    fetch("/api/contributions")
       .then((r) => r.json())
       .then((data) => {
-        const all: ContributionDay[] = data.contributions || [];
-        setContributions(all);
-        const total = all.reduce((s: number, c: ContributionDay) => s + c.count, 0);
-        setTotalContributions(total);
+        if (data.contributions) {
+          setContributions(data.contributions);
+          setTotalContributions(data.total || 0);
+        }
       })
       .catch(() => {})
       .finally(() => setLoading(false));
