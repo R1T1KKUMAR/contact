@@ -32,7 +32,7 @@ export default function Contact() {
       return;
     }
 
-    const baseParams = {
+    const params = {
       from_name: formState.name,
       reply_to: formState.email,
       company: formState.company || "—",
@@ -42,8 +42,8 @@ export default function Contact() {
 
     try {
       await Promise.all([
-        emailjs.send(serviceId, templateId, baseParams, publicKey),
-        emailjs.send(serviceId, templateId, { ...baseParams, to_email: formState.email }, publicKey),
+        emailjs.send(serviceId, templateId, { ...params, to_email: "ritikkumar12bicbly@gmail.com" }, publicKey),
+        emailjs.send(serviceId, templateId, { ...params, to_email: formState.email }, publicKey),
       ]);
       setSubmitted(true);
       setTimeout(() => {
