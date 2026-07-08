@@ -2,6 +2,9 @@ node_modules/
 .dist/
 dist/
 .vite/
+.next/
 .DS_Store
 .env
 .env.*
+*.tsbuildinfo
+next-env.d.ts

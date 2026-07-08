@@ -1,0 +1,126 @@
+"use client";
+
+import { motion } from "framer-motion";
+import { Star, GitFork, ExternalLink } from "lucide-react";
+import { GithubIcon } from "./Icons";
+import ScrollReveal from "./ScrollReveal";
+import { SITE } from "@/config/site";
+
+const repos = [
+  { name: "blog-writer-ai", stars: 0, forks: 0, language: "TypeScript", description: "AI-powered blog writing tool" },
+  { name: "jolt", stars: 0, forks: 0, language: "TypeScript", description: "Full-stack application" },
+  { name: "MacQuiz", stars: 0, forks: 3, language: "JavaScript", description: "macOS quiz application" },
+  { name: "voice_agent", stars: 0, forks: 0, language: "Python", description: "Voice AI agent" },
+  { name: "NIDS", stars: 0, forks: 0, language: "Python", description: "Network Intrusion Detection System" },
+  { name: "LMS", stars: 0, forks: 0, language: "HTML", description: "Learning Management System for Harrow School" },
+];
+
+export default function GitHubActivity() {
+  return (
+    <section className="relative py-32">
+      <div className="mx-auto max-w-7xl px-6">
+        <ScrollReveal>
+          <div className="mb-16">
+            <span className="text-xs font-mono tracking-widest text-[#6366F1] uppercase">
+              GitHub
+            </span>
+            <h2
+              className="text-4xl sm:text-5xl font-bold text-[#FAFAFA] mt-4 tracking-tight"
+              style={{ fontFamily: "var(--font-heading)" }}
+            >
+              GitHub Activity
+            </h2>
+            <p className="text-lg text-[#94A3B8] mt-4 max-w-2xl leading-relaxed">
+              Open source contributions and personal projects.
+            </p>
+          </div>
+        </ScrollReveal>
+
+        <ScrollReveal>
+          <div className="p-6 rounded-xl border border-[rgba(255,255,255,0.06)] bg-[#111827]/50 mb-8 overflow-x-auto">
+            <h3 className="text-sm font-semibold text-[#FAFAFA] mb-4 flex items-center gap-2">
+              <GithubIcon size={16} className="text-[#6366F1]" />
+              Contribution Activity
+            </h3>
+            <div className="flex gap-[3px]">
+              <div className="flex flex-col gap-[3px] mr-[3px]">
+                {["Mon", "", "Wed", "", "Fri", "", ""].map((d, i) => (
+                  <div key={i} className="w-[10px] h-[10px] text-[6px] text-[#94A3B8] leading-[10px] text-center">
+                    {d}
+                  </div>
+                ))}
+              </div>
+              {Array.from({ length: 51 }).map((_, week) => (
+                <div key={week} className="flex flex-col gap-[3px]">
+                  {Array.from({ length: 7 }).map((_, day) => {
+                    const idx = week * 7 + day;
+                    const hash = ((idx * 16807 + 12345) % 2147483647) / 2147483647;
+                    const levels = ["#1C1C1C", "#0E4429", "#006D32", "#26A641", "#39D353"];
+                    const level = hash < 0.45 ? 0 : hash < 0.65 ? 1 : hash < 0.78 ? 2 : hash < 0.9 ? 3 : 4;
+                    return (
+                      <div
+                        key={day}
+                        className="w-[10px] h-[10px] rounded-[2px]"
+                        style={{ backgroundColor: levels[level] }}
+                      />
+                    );
+                  })}
+                </div>
+              ))}
+            </div>
+          </div>
+        </ScrollReveal>
+
+        <div className="space-y-3">
+          {repos.map((repo, i) => (
+            <ScrollReveal key={repo.name} delay={i * 0.08}>
+              <motion.a
+                href={SITE.github}
+                target="_blank"
+                rel="noopener noreferrer"
+                whileHover={{ x: 4 }}
+                className="group flex items-center justify-between p-4 rounded-lg border border-[rgba(255,255,255,0.06)] bg-[#111827]/30 hover:bg-[#111827]/60 transition-all duration-300"
+              >
+                <div className="flex items-center gap-4">
+                  <GithubIcon size={18} className="text-[#6366F1]" />
+                  <div>
+                    <h4 className="text-sm font-medium text-[#FAFAFA] group-hover:text-[#6366F1] transition-colors">
+                      {repo.name}
+                    </h4>
+                    <p className="text-xs text-[#94A3B8] mt-0.5">{repo.description}</p>
+                  </div>
+                </div>
+                <div className="flex items-center gap-4 text-xs text-[#94A3B8]">
+                  <span className="flex items-center gap-1">
+                    <Star size={12} /> {repo.stars}
+                  </span>
+                  <span className="flex items-center gap-1">
+                    <GitFork size={12} /> {repo.forks}
+                  </span>
+                  <span className="px-2 py-0.5 rounded bg-[#6366F1]/10 text-[#6366F1] font-mono text-[10px]">
+                    {repo.language}
+                  </span>
+                  <ExternalLink size={12} className="opacity-0 group-hover:opacity-100 transition-opacity" />
+                </div>
+              </motion.a>
+            </ScrollReveal>
+          ))}
+        </div>
+
+        <ScrollReveal delay={0.3}>
+          <motion.a
+            href={SITE.github}
+            target="_blank"
+            rel="noopener noreferrer"
+            whileHover={{ scale: 1.02 }}
+            className="mt-6 flex items-center justify-center gap-2 w-full py-3 text-sm text-[#94A3B8] border border-[rgba(255,255,255,0.06)] rounded-lg hover:text-[#FAFAFA] hover:bg-[#111827]/50 transition-all duration-300"
+          >
+            <GithubIcon size={16} />
+            View all repositories on GitHub
+            <ExternalLink size={14} />
+          </motion.a>
+        </ScrollReveal>
+      </div>
+    </section>
+  );
+}
