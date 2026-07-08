@@ -32,19 +32,19 @@ export default function Contact() {
       return;
     }
 
+    const baseParams = {
+      from_name: formState.name,
+      reply_to: formState.email,
+      company: formState.company || "—",
+      topic: formState.topic,
+      message: formState.message,
+    };
+
     try {
-      await emailjs.send(
-        serviceId,
-        templateId,
-        {
-          from_name: formState.name,
-          reply_to: formState.email,
-          company: formState.company || "—",
-          topic: formState.topic,
-          message: formState.message,
-        },
-        publicKey,
-      );
+      await Promise.all([
+        emailjs.send(serviceId, templateId, baseParams, publicKey),
+        emailjs.send(serviceId, templateId, { ...baseParams, to_email: formState.email }, publicKey),
+      ]);
       setSubmitted(true);
       setTimeout(() => {
         setSubmitted(false);
