@@ -28,7 +28,7 @@ function ProjectModal({ project, onClose }: ProjectModalProps) {
         exit={{ opacity: 0, scale: 0.95, y: 20 }}
         transition={{ duration: 0.4, ease: [0.25, 0.1, 0.25, 1] }}
         onClick={(e) => e.stopPropagation()}
-        className="relative w-full max-w-3xl max-h-[90vh] overflow-y-auto rounded-2xl border border-[rgba(255,255,255,0.08)] bg-[#111827] p-8"
+        className="relative w-full max-w-3xl max-h-[90vh] overflow-y-auto rounded-2xl border border-[rgba(255,255,255,0.08)] bg-[#111827] p-6 sm:p-8"
       >
         <button
           onClick={onClose}
@@ -88,7 +88,7 @@ function ProjectModal({ project, onClose }: ProjectModalProps) {
             <h3 className="text-xs font-mono tracking-widest text-[#6366F1] uppercase mb-3 flex items-center gap-2">
               <Trophy size={14} /> Metrics
             </h3>
-            <div className="grid grid-cols-3 gap-4">
+            <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
               {project.metrics.map((metric) => (
                 <div
                   key={metric}
@@ -124,7 +124,7 @@ export default function Projects() {
   const [selectedProject, setSelectedProject] = useState<typeof SITE.projects[0] | null>(null);
 
   return (
-    <section id="projects" className="relative py-32">
+    <section id="projects" className="relative py-16 md:py-24 lg:py-32">
       <div className="mx-auto max-w-7xl px-6">
         <ScrollReveal>
           <div className="mb-16">

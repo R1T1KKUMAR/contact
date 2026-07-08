@@ -6,7 +6,7 @@ import { SITE } from "@/config/site";
 
 export default function Experience() {
   return (
-    <section id="experience" className="relative py-32">
+    <section id="experience" className="relative py-16 md:py-24 lg:py-32">
       <div className="mx-auto max-w-7xl px-6">
         <ScrollReveal>
           <div className="mb-16">
@@ -38,7 +38,7 @@ export default function Experience() {
                 >
                   <div className="hidden md:block w-1/2" />
 
-                  <div className="absolute left-0 md:left-1/2 top-0 w-4 h-4 -translate-x-[7px] md:-translate-x-2 rounded-full border-2 border-[#6366F1] bg-[#09090B] z-10" />
+                  <div className="absolute left-0 md:left-1/2 top-0 w-4 h-4 -translate-x-1/2 rounded-full border-2 border-[#6366F1] bg-[#09090B] z-10" />
 
                   <div className="md:w-1/2 pl-8 md:pl-0 md:px-8">
                     <motion.div

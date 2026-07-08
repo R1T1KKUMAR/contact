@@ -70,7 +70,7 @@ export default function GitHubActivity() {
   const weeks = groupByWeek(contributions);
 
   return (
-    <section className="relative py-32">
+    <section className="relative py-16 md:py-24 lg:py-32">
       <div className="mx-auto max-w-7xl px-6">
         <ScrollReveal>
           <div className="mb-16">
@@ -139,15 +139,15 @@ export default function GitHubActivity() {
                 target="_blank"
                 rel="noopener noreferrer"
                 whileHover={{ x: 4 }}
-                className="group flex items-center justify-between p-4 rounded-lg border border-[rgba(255,255,255,0.06)] bg-[#111827]/30 hover:bg-[#111827]/60 transition-all duration-300"
+                className="group flex flex-wrap sm:flex-nowrap items-center justify-between gap-2 p-4 rounded-lg border border-[rgba(255,255,255,0.06)] bg-[#111827]/30 hover:bg-[#111827]/60 transition-all duration-300"
               >
-                <div className="flex items-center gap-4">
-                  <GithubIcon size={18} className="text-[#6366F1]" />
-                  <div>
-                    <h4 className="text-sm font-medium text-[#FAFAFA] group-hover:text-[#6366F1] transition-colors">
+                <div className="flex items-center gap-4 min-w-0 flex-1">
+                  <GithubIcon size={18} className="text-[#6366F1] flex-shrink-0" />
+                  <div className="min-w-0">
+                    <h4 className="text-sm font-medium text-[#FAFAFA] group-hover:text-[#6366F1] transition-colors truncate">
                       {repo.name}
                     </h4>
-                    <p className="text-xs text-[#94A3B8] mt-0.5">{repo.description}</p>
+                    <p className="text-xs text-[#94A3B8] mt-0.5 truncate">{repo.description}</p>
                   </div>
                 </div>
                 <div className="flex items-center gap-4 text-xs text-[#94A3B8]">

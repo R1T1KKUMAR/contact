@@ -41,7 +41,7 @@ const cards = [
 
 export default function About() {
   return (
-    <section id="about" className="relative py-32">
+    <section id="about" className="relative py-16 md:py-24 lg:py-32">
       <div className="mx-auto max-w-7xl px-6">
         <ScrollReveal>
           <div className="mb-16">
@@ -73,8 +73,8 @@ export default function About() {
                   <h3 className="text-xs font-mono tracking-widest text-[#6366F1] uppercase mb-2">
                     {card.title}
                   </h3>
-                  <p className="text-base font-medium text-[#FAFAFA]">{card.content}</p>
-                  <p className="text-sm text-[#94A3B8] mt-1">{card.subtitle}</p>
+                  <p className="text-base font-medium text-[#FAFAFA] break-words">{card.content}</p>
+                  <p className="text-sm text-[#94A3B8] mt-1 break-words">{card.subtitle}</p>
                   {"meta" in card && card.meta && (
                     <p className="text-xs text-[#6366F1]/60 mt-2 font-mono">{card.meta}</p>
                   )}

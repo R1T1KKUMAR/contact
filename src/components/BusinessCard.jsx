@@ -99,17 +99,15 @@ export default function BusinessCard({ contact }) {
         </div>
 
         {(contact.website || contact.github || contact.resumeUrl) && (
-          <div style={{ marginTop: 10 }} className="hint">
+          <div style={{ marginTop: 10, display: "flex", flexWrap: "wrap", gap: "8px" }} className="hint">
             {contact.website ? (
               <span>
                 Website: <a href={contact.website} target="_blank" rel="noreferrer">{contact.website}</a>
-                {'  '}
               </span>
             ) : null}
             {contact.github ? (
               <span>
                 GitHub: <a href={contact.github} target="_blank" rel="noreferrer">{contact.github}</a>
-                {'  '}
               </span>
             ) : null}
             {contact.resumeUrl ? (

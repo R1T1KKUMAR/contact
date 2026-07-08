@@ -58,7 +58,7 @@ export default function Contact() {
   };
 
   return (
-    <section id="contact" className="relative py-32">
+    <section id="contact" className="relative py-16 md:py-24 lg:py-32">
       <div className="mx-auto max-w-7xl px-6">
         <ScrollReveal>
           <div className="mb-16">
@@ -79,7 +79,7 @@ export default function Contact() {
 
         <div className="max-w-2xl mx-auto">
           <ScrollReveal>
-            <div className="relative p-8 rounded-2xl border border-[rgba(255,255,255,0.08)] bg-gradient-to-br from-[#111827]/80 to-[#09090B]/80 backdrop-blur-xl">
+            <div className="relative p-6 sm:p-8 rounded-2xl border border-[rgba(255,255,255,0.08)] bg-gradient-to-br from-[#111827]/80 to-[#09090B]/80 backdrop-blur-xl">
               <div className="absolute inset-0 rounded-2xl bg-gradient-to-br from-[#6366F1]/5 to-transparent pointer-events-none" />
 
               <AnimatePresence mode="wait">

@@ -160,7 +160,7 @@ export default function Hero() {
               transition: "transform 0.1s ease-out",
             }}
           >
-            <div className="relative w-80">
+            <div className="relative w-full max-w-xs">
               <div className="absolute inset-0 bg-gradient-to-br from-[#6366F1]/20 to-[#06B6D4]/20 rounded-3xl blur-3xl" />
               <div className="relative w-full rounded-3xl border border-[rgba(255,255,255,0.08)] bg-gradient-to-br from-[#18181B] to-[#111827] overflow-hidden">
                 <div className="aspect-[4/5] w-full overflow-hidden bg-gradient-to-br from-[#6366F1]/10 to-transparent">
