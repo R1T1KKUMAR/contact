@@ -16,7 +16,7 @@ export const SITE = {
   ],
   education: {
     degree: "B.Tech in Computer Science",
-    university: "Invertis University",
+    university: "AKTU",
     location: "Bareilly",
     period: "2023 – 2027",
   },
@@ -115,16 +115,4 @@ export const SITE = {
     { name: "Framer Motion", category: "Frontend" },
     { name: "Git", category: "DevOps" },
   ],
-  testimonials: [
-    {
-      name: "Client Name",
-      role: "CTO, Company",
-      content: "Exceptional engineering skills and attention to detail. Delivered beyond expectations.",
-    },
-    {
-      name: "Client Name",
-      role: "Founder, Startup",
-      content: "One of the best developers I've worked with. Deep understanding of both frontend and AI.",
-    },
-  ],
-};
+  };

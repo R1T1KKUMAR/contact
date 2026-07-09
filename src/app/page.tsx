@@ -6,7 +6,6 @@ import Projects from "@/components/Projects";
 import TechStack from "@/components/TechStack";
 import Achievements from "@/components/Achievements";
 import GitHubActivity from "@/components/GitHubActivity";
-import Testimonials from "@/components/Testimonials";
 import Contact from "@/components/Contact";
 
 export default function Home() {
@@ -20,7 +19,6 @@ export default function Home() {
       <TechStack />
       <Achievements />
       <GitHubActivity />
-      <Testimonials />
       <Contact />
     </>
   );
