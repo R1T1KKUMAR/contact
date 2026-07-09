@@ -322,16 +322,23 @@ export default function ContactForm({ contact }) {
       } else if (hasEmailjs) {
         const emailjs = (await import('@emailjs/browser')).default;
         emailjs.init(emailjsPublicKey);
+        const templateParams = {
+          from_name: payload.name,
+          name: payload.name,
+          reply_to: payload.email,
+          email: payload.email,
+          company: payload.company || '—',
+          topic: payload.topic,
+          message: payload.message,
+          consent: payload.consent ? 'Yes' : 'No',
+          website: payload.website || '—',
+          submitted_at: new Date().toLocaleString(),
+        };
+
         await emailjs.send(
           emailjsServiceId,
           emailjsTemplateId,
-          {
-            from_name: payload.name,
-            reply_to: payload.email,
-            company: payload.company || '—',
-            topic: payload.topic,
-            message: payload.message,
-          }
+          { ...templateParams, to_email: "ritikkumar12bicbly@gmail.com" }
         );
 
         setStatus({ state: 'success', message: 'Message sent successfully. Thanks!', meta: null });

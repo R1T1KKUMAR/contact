@@ -34,10 +34,15 @@ export default function Contact() {
 
     const params = {
       from_name: formState.name,
+      name: formState.name,
       reply_to: formState.email,
+      email: formState.email,
       company: formState.company || "—",
       topic: formState.topic,
       message: formState.message,
+      consent: "Yes",
+      website: "—",
+      submitted_at: new Date().toLocaleString(),
     };
 
     try {

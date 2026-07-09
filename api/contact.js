@@ -186,28 +186,52 @@ export default async function handler(req, res) {
   const text =
     `${message.trim()}\n\n` +
     `—\n` +
-    `From: ${name.trim()}\n` +
+    `Name: ${name.trim()}\n` +
     `Email: ${email.trim()}\n` +
     (safeCompany ? `Company: ${safeCompany}\n` : '') +
-    `Topic: ${safeTopic}\n`;
+    `Topic: ${safeTopic}\n` +
+    `Consent: Yes\n` +
+    `Submitted: ${new Date().toLocaleString()}\n`;
+
+  const confirmSubject = `Thank you for reaching out, ${name.trim()}`;
+  const confirmText =
+    `Hi ${name.trim()},\n\n` +
+    `Thank you for your message! I'll get back to you as soon as possible.\n\n` +
+    `Here's a copy of your message:\n\n` +
+    `${message.trim()}\n\n` +
+    `—\n` +
+    `Name: ${name.trim()}\n` +
+    `Email: ${email.trim()}\n` +
+    (safeCompany ? `Company: ${safeCompany}\n` : '') +
+    `Topic: ${safeTopic}\n` +
+    `Submitted: ${new Date().toLocaleString()}\n\n` +
+    `Best,\nRitik`;
 
   try {
     const { Resend } = await import('resend');
     const resend = new Resend(resendApiKey);
 
-    const result = await resend.emails.send({
-      from: fromEmail,
-      to: [toEmail],
-      subject,
-      text,
-      replyTo: email.trim(),
-    });
+    const [ownerResult, confirmResult] = await Promise.all([
+      resend.emails.send({
+        from: fromEmail,
+        to: [toEmail],
+        subject,
+        text,
+        replyTo: email.trim(),
+      }),
+      resend.emails.send({
+        from: fromEmail,
+        to: [email.trim()],
+        subject: confirmSubject,
+        text: confirmText,
+      }),
+    ]);
 
-    if (result?.error) {
-      throw new Error(result.error.message || 'Resend error');
+    if (ownerResult?.error) {
+      throw new Error(ownerResult.error.message || 'Resend error');
     }
 
-    return res.status(200).json({ ok: true, id: result?.data?.id, receivedAt: new Date().toISOString() });
+    return res.status(200).json({ ok: true, id: ownerResult?.data?.id, receivedAt: new Date().toISOString() });
   } catch (err) {
     const message = err instanceof Error ? err.message : 'Unknown error';
     return res.status(500).json({ ok: false, error: `Email send failed. ${message}` });
