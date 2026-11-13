@@ -90,27 +90,40 @@ export async function uploadImageAction(
 
   try {
     // Ensure a public bucket exists (first upload creates it).
-    const { data: buckets } = await supabase.storage.listBuckets();
+    const { data: buckets, error: listError } = await supabase.storage.listBuckets();
+    if (listError) {
+      return { ok: false, error: `Storage check failed: ${listError.message}` };
+    }
     if (!buckets?.some((b) => b.name === ASSETS_BUCKET)) {
       const { error: createError } = await supabase.storage.createBucket(ASSETS_BUCKET, {
         public: true,
       });
       if (createError && !createError.message.includes("already exists")) {
-        return { ok: false, error: createError.message };
+        return { ok: false, error: `Could not create storage bucket: ${createError.message}` };
       }
     }
 
-    const safeName = file.name.replace(/[^a-zA-Z0-9._-]/g, "-");
+    const safeName = file.name.replace(/[^a-zA-Z0-9._-]/g, "-") || "image";
     const path = `${Date.now()}-${safeName}`;
-    const { error } = await supabase.storage
-      .from(ASSETS_BUCKET)
-      .upload(path, file, { contentType: file.type });
 
-    if (error) return { ok: false, error: error.message };
+    // Upload raw bytes (not the File/Blob object) so supabase-js uses the
+    // standard POST /object/<bucket>/<path> route instead of the multipart
+    // form-data route, which some storage versions reject.
+    const bytes = await file.arrayBuffer();
+    const { error } = await supabase.storage.from(ASSETS_BUCKET).upload(path, bytes, {
+      contentType: file.type,
+    });
+
+    if (error) {
+      console.error("[uploadImageAction] upload failed:", error);
+      const code = "statusCode" in error ? ` (HTTP ${(error as { statusCode?: number }).statusCode})` : "";
+      return { ok: false, error: `Upload failed${code}: ${error.message}` };
+    }
 
     const { data } = supabase.storage.from(ASSETS_BUCKET).getPublicUrl(path);
     return { ok: true, url: data.publicUrl };
   } catch (err) {
+    console.error("[uploadImageAction] unexpected error:", err);
     return { ok: false, error: err instanceof Error ? err.message : "Upload failed." };
   }
 }
