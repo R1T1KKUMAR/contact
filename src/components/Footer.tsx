@@ -9,39 +9,45 @@ export default function Footer() {
   const year = new Date().getFullYear();
 
   return (
-    <footer className="border-t border-[var(--bp-line-soft)]">
-      <div className="mx-auto flex max-w-5xl flex-col gap-4 px-6 py-8 font-mono text-[11px] text-[var(--bp-graphite)] sm:flex-row sm:items-center sm:justify-between">
-        <p>
-          SHEET 09 / 09 — {SITE.name}
+    <footer className="border-t border-[var(--hairline)]">
+      <div className="mx-auto flex max-w-6xl flex-col gap-5 px-6 py-10 sm:flex-row sm:items-center sm:justify-between">
+        <p
+          className="text-lg font-medium tracking-tight text-[var(--ink)]"
+          style={{ fontFamily: "var(--font-heading)" }}
+        >
+          {SITE.name.split(" ")[0]}
+          <span className="text-[var(--ultra)]">.</span>
         </p>
-        <div className="flex items-center gap-5">
+
+        <div className="flex items-center gap-5 text-sm text-[var(--graphite)]">
           <a
             href={SITE.github}
             target="_blank"
             rel="noopener noreferrer"
-            className="transition-colors hover:text-[var(--bp-white)]"
-            aria-label="GitHub"
+            className="transition-colors hover:text-[var(--ink)]"
           >
-            <GithubIcon size={15} />
+            GitHub
           </a>
           <a
             href={SITE.linkedin}
             target="_blank"
             rel="noopener noreferrer"
-            className="transition-colors hover:text-[var(--bp-white)]"
-            aria-label="LinkedIn"
+            className="transition-colors hover:text-[var(--ink)]"
           >
-            <LinkedinIcon size={15} />
+            LinkedIn
           </a>
           <a
             href={`mailto:${SITE.email}`}
-            className="transition-colors hover:text-[var(--bp-white)]"
-            aria-label="Email"
+            className="inline-flex items-center gap-1.5 transition-colors hover:text-[var(--ink)]"
           >
-            <Mail size={15} />
+            <Mail size={14} />
+            Email
           </a>
         </div>
-        <p>&copy; {year} — drawn in Next.js</p>
+
+        <p className="text-xs text-[var(--graphite)]">
+          © {year} {SITE.name}
+        </p>
       </div>
     </footer>
   );

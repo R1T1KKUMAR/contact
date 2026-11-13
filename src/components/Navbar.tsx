@@ -1,120 +1,104 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useState, useEffect } from "react";
 import { usePathname } from "next/navigation";
+import { Menu, X } from "lucide-react";
 import { useSite } from "@/components/site-context";
 
-const SHEETS: { no: string; label: string; href: string }[] = [
-  { no: "01", label: "Cover", href: "#top" },
-  { no: "02", label: "About", href: "#about" },
-  { no: "03", label: "Parts list", href: "#skills" },
-  { no: "04", label: "Assembly", href: "#projects" },
-  { no: "05", label: "Revisions", href: "#experience" },
-  { no: "06", label: "Materials", href: "#stack" },
-  { no: "07", label: "Inspection", href: "#achievements" },
-  { no: "08", label: "Activity", href: "#github" },
-  { no: "09", label: "Request build", href: "#contact" },
+const LINKS = [
+  { label: "About", href: "#about" },
+  { label: "Projects", href: "#projects" },
+  { label: "Experience", href: "#experience" },
+  { label: "Contact", href: "#contact" },
 ];
 
 export default function Navbar() {
   const SITE = useSite();
   const pathname = usePathname();
-  const [active, setActive] = useState("#top");
+  const [open, setOpen] = useState(false);
+  const [scrolled, setScrolled] = useState(false);
 
   useEffect(() => {
-    const ids = SHEETS.map((s) => s.href.slice(1));
-    const observer = new IntersectionObserver(
-      (entries) => {
-        for (const entry of entries) {
-          if (entry.isIntersecting) setActive(`#${entry.target.id}`);
-        }
-      },
-      { rootMargin: "-30% 0px -55% 0px" }
-    );
-    for (const id of ids) {
-      const el = document.getElementById(id);
-      if (el) observer.observe(el);
-    }
-    return () => observer.disconnect();
+    const onScroll = () => setScrolled(window.scrollY > 24);
+    onScroll();
+    window.addEventListener("scroll", onScroll, { passive: true });
+    return () => window.removeEventListener("scroll", onScroll);
   }, []);
 
   if (pathname?.startsWith("/admin")) return null;
 
-  const brand = (
-    <a href="#top" className="font-mono text-sm font-semibold tracking-tight text-[var(--bp-white)]">
-      {SITE.name.split(" ")[0].toUpperCase()}
-      <span className="text-[var(--bp-cyan)]">.</span>
-    </a>
-  );
-
-  // Desktop: fixed sheet-index rail
-  const rail = (
-    <nav
-      aria-label="Sheet index"
-      className="fixed left-0 top-0 bottom-0 z-50 hidden w-44 flex-col justify-between border-r border-[var(--bp-line-soft)] bg-[rgba(10,32,56,0.7)] px-5 py-6 backdrop-blur-sm lg:flex"
-    >
-      <div>
-        {brand}
-        <ul className="mt-10 space-y-1">
-          {SHEETS.map((sheet) => {
-            const isActive = active === sheet.href;
-            return (
-              <li key={sheet.href}>
-                <a
-                  href={sheet.href}
-                  className={`group flex items-baseline gap-2 border-l-2 py-1.5 pl-3 text-[11px] font-mono transition-colors ${
-                    isActive
-                      ? "border-[var(--bp-cyan)] text-[var(--bp-white)]"
-                      : "border-transparent text-[var(--bp-graphite)] hover:text-[var(--bp-white)]"
-                  }`}
-                >
-                  <span className={isActive ? "text-[var(--bp-cyan)]" : "text-[var(--bp-graphite)] opacity-60"}>
-                    {sheet.no}
-                  </span>
-                  <span>{sheet.label}</span>
-                </a>
-              </li>
-            );
-          })}
-        </ul>
-      </div>
-      <div className="space-y-1 font-mono text-[10px] leading-relaxed text-[var(--bp-graphite)]">
-        <p className="flex items-center gap-1.5">
-          <span className="inline-block h-1.5 w-1.5 rounded-full bg-[var(--bp-cyan)]" />
-          Open to work
-        </p>
-        <p>{SITE.location}</p>
-      </div>
-    </nav>
-  );
-
-  // Mobile: compact top bar with the same index, scrollable
-  const topbar = (
-    <nav
-      aria-label="Sheet index"
-      className="fixed inset-x-0 top-0 z-50 flex h-14 items-center justify-between gap-4 border-b border-[var(--bp-line-soft)] bg-[rgba(10,32,56,0.85)] px-4 backdrop-blur-sm lg:hidden"
-    >
-      {brand}
-      <div className="flex gap-4 overflow-x-auto font-mono text-[11px] text-[var(--bp-graphite)] [scrollbar-width:none]">
-        {SHEETS.map((sheet) => (
-          <a
-            key={sheet.href}
-            href={sheet.href}
-            className={`whitespace-nowrap transition-colors ${
-              active === sheet.href ? "text-[var(--bp-cyan)]" : "hover:text-[var(--bp-white)]"
-            }`}
-          >
-            {sheet.no}
-          </a>
-        ))}
-      </div>
-    </nav>
-  );
-
   return (
-    <>
-      {rail}
-      {topbar}
-    </>
+    <header
+      className={`fixed inset-x-0 top-0 z-50 transition-all duration-300 ${
+        scrolled
+          ? "border-b border-[var(--hairline)] bg-[rgba(250,250,247,0.85)] backdrop-blur-md"
+          : "border-b border-transparent"
+      }`}
+    >
+      <nav className="mx-auto flex h-16 max-w-6xl items-center justify-between px-6">
+        <a
+          href="#top"
+          className="text-lg font-medium tracking-tight text-[var(--ink)]"
+          style={{ fontFamily: "var(--font-heading)" }}
+        >
+          {SITE.name.split(" ")[0]}
+          <span className="text-[var(--ultra)]">.</span>
+        </a>
+
+        <div className="hidden items-center gap-8 md:flex">
+          {LINKS.map((link) => (
+            <a
+              key={link.href}
+              href={link.href}
+              className="text-sm text-[var(--graphite)] transition-colors hover:text-[var(--ink)]"
+            >
+              {link.label}
+            </a>
+          ))}
+          {SITE.resumeUrl && (
+            <a
+              href={SITE.resumeUrl}
+              className="rounded-full bg-[var(--ink)] px-5 py-2 text-sm text-[var(--paper)] transition-colors hover:bg-[var(--ultra-deep)]"
+            >
+              Resume
+            </a>
+          )}
+        </div>
+
+        <button
+          onClick={() => setOpen(!open)}
+          className="text-[var(--ink)] md:hidden"
+          aria-label="Toggle menu"
+        >
+          {open ? <X size={20} /> : <Menu size={20} />}
+        </button>
+      </nav>
+
+      {open && (
+        <div className="border-t border-[var(--hairline)] bg-[var(--paper)] px-6 py-4 md:hidden">
+          <div className="flex flex-col">
+            {LINKS.map((link) => (
+              <a
+                key={link.href}
+                href={link.href}
+                onClick={() => setOpen(false)}
+                className="py-2.5 text-sm text-[var(--graphite)] hover:text-[var(--ink)]"
+              >
+                {link.label}
+              </a>
+            ))}
+            {SITE.resumeUrl && (
+              <a
+                href={SITE.resumeUrl}
+                onClick={() => setOpen(false)}
+                className="mt-2 rounded-full bg-[var(--ink)] px-5 py-2.5 text-center text-sm text-[var(--paper)]"
+              >
+                Resume
+              </a>
+            )}
+          </div>
+        </div>
+      )}
+    </header>
   );
 }

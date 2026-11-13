@@ -1,21 +1,28 @@
 import type { Metadata } from "next";
-import { IBM_Plex_Sans, IBM_Plex_Mono } from "next/font/google";
+import { Fraunces, Instrument_Sans, IBM_Plex_Mono } from "next/font/google";
 import "./globals.css";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import { SiteProvider } from "@/components/site-context";
 import { getSiteContent } from "@/lib/site-data";
 
-const plexSans = IBM_Plex_Sans({
+const fraunces = Fraunces({
   subsets: ["latin"],
-  weight: ["400", "500", "600", "700"],
+  weight: ["400", "500", "600"],
   variable: "--font-heading",
+  display: "swap",
+});
+
+const instrumentSans = Instrument_Sans({
+  subsets: ["latin"],
+  weight: ["400", "500", "600"],
+  variable: "--font-body",
   display: "swap",
 });
 
 const plexMono = IBM_Plex_Mono({
   subsets: ["latin"],
-  weight: ["400", "500", "600"],
+  weight: ["400", "500"],
   variable: "--font-mono",
   display: "swap",
 });
@@ -62,14 +69,12 @@ export default async function RootLayout({
   const site = await getSiteContent();
 
   return (
-    <html lang="en" className={`${plexSans.variable} ${plexMono.variable}`}>
+    <html lang="en" className={`${fraunces.variable} ${instrumentSans.variable} ${plexMono.variable}`}>
       <body className="antialiased">
         <SiteProvider site={site}>
           <Navbar />
-          <main className="lg:pl-44">{children}</main>
-          <div className="lg:pl-44">
-            <Footer />
-          </div>
+          <main>{children}</main>
+          <Footer />
         </SiteProvider>
       </body>
     </html>

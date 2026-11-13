@@ -2,15 +2,15 @@
 
 import { useState } from "react";
 import { Send, CheckCircle2, AlertCircle, Loader2 } from "lucide-react";
-import { SheetHeader } from "./Sheet";
+import { SectionHeader } from "./Sheet";
 import ScrollReveal from "./ScrollReveal";
 import emailjs from "@emailjs/browser";
 import { useSite } from "@/components/site-context";
 
 const inputClass =
-  "w-full border-b border-[var(--bp-line)] bg-transparent px-1 py-2.5 text-sm text-[var(--bp-white)] placeholder-[var(--bp-graphite)]/50 transition-colors focus:border-[var(--bp-red)] focus:outline-none";
+  "w-full border-b border-[var(--hairline)] bg-transparent px-0 py-2.5 text-[15px] text-[var(--ink)] placeholder-[var(--graphite)]/50 transition-colors focus:border-[var(--ultra)] focus:outline-none";
 
-const labelClass = "font-mono text-[9px] tracking-[0.2em] text-[var(--bp-graphite)]";
+const labelClass = "text-xs font-medium uppercase tracking-wider text-[var(--graphite)]";
 
 export default function Contact() {
   const SITE = useSite();
@@ -71,33 +71,35 @@ export default function Contact() {
   };
 
   return (
-    <section id="contact" className="relative scroll-mt-20 py-16 md:py-24">
-      <div className="mx-auto max-w-5xl px-6">
+    <section id="contact" className="relative scroll-mt-20 py-20 md:py-28">
+      <div className="mx-auto max-w-6xl px-6">
         <ScrollReveal>
-          <SheetHeader
-            no="09"
-            title="Request a build"
-            blurb={`Have a project in mind? Write to ${SITE.email} or use the requisition below.`}
+          <SectionHeader
+            title="Get in touch"
+            blurb={`Have a project in mind? Write to ${SITE.email} or use the form below.`}
           />
         </ScrollReveal>
 
         <ScrollReveal>
-          <div className="max-w-2xl border border-[var(--bp-line)] bg-[var(--bp-panel)] p-6 sm:p-8">
+          <div className="max-w-2xl rounded-3xl border border-[var(--hairline)] bg-white p-7 sm:p-10">
             {submitted ? (
-              <div className="flex flex-col items-center justify-center py-12">
-                <CheckCircle2 className="h-12 w-12 text-[var(--bp-cyan)]" />
-                <h3 className="mt-5 text-lg font-semibold text-[var(--bp-white)]">
-                  Requisition received
+              <div className="flex flex-col items-center justify-center py-14">
+                <CheckCircle2 className="h-12 w-12 text-[var(--grow)]" />
+                <h3
+                  className="mt-5 text-2xl font-medium text-[var(--ink)]"
+                  style={{ fontFamily: "var(--font-heading)" }}
+                >
+                  Message sent
                 </h3>
-                <p className="mt-2 text-sm text-[var(--bp-graphite)]">
-                  I&apos;ll get back to you soon.
+                <p className="mt-2 text-sm text-[var(--graphite)]">
+                  Thanks — I&apos;ll get back to you soon.
                 </p>
               </div>
             ) : (
-              <form onSubmit={handleSubmit} className="space-y-7">
-                <div className="grid gap-7 sm:grid-cols-2">
+              <form onSubmit={handleSubmit} className="space-y-8">
+                <div className="grid gap-8 sm:grid-cols-2">
                   <div className="space-y-1">
-                    <label htmlFor="cf-name" className={labelClass}>NAME</label>
+                    <label htmlFor="cf-name" className={labelClass}>Name</label>
                     <input
                       id="cf-name"
                       type="text"
@@ -109,7 +111,7 @@ export default function Contact() {
                     />
                   </div>
                   <div className="space-y-1">
-                    <label htmlFor="cf-email" className={labelClass}>EMAIL</label>
+                    <label htmlFor="cf-email" className={labelClass}>Email</label>
                     <input
                       id="cf-email"
                       type="email"
@@ -122,9 +124,9 @@ export default function Contact() {
                   </div>
                 </div>
 
-                <div className="grid gap-7 sm:grid-cols-2">
+                <div className="grid gap-8 sm:grid-cols-2">
                   <div className="space-y-1">
-                    <label htmlFor="cf-company" className={labelClass}>COMPANY</label>
+                    <label htmlFor="cf-company" className={labelClass}>Company</label>
                     <input
                       id="cf-company"
                       type="text"
@@ -135,12 +137,12 @@ export default function Contact() {
                     />
                   </div>
                   <div className="space-y-1">
-                    <label htmlFor="cf-topic" className={labelClass}>BUILD TYPE</label>
+                    <label htmlFor="cf-topic" className={labelClass}>Topic</label>
                     <select
                       id="cf-topic"
                       value={formState.topic}
                       onChange={(e) => setFormState({ ...formState, topic: e.target.value })}
-                      className={`${inputClass} [&>option]:bg-[var(--bp-ink-deep)]`}
+                      className={inputClass}
                     >
                       <option value="">Select a topic</option>
                       <option value="project">Project collaboration</option>
@@ -152,7 +154,7 @@ export default function Contact() {
                 </div>
 
                 <div className="space-y-1">
-                  <label htmlFor="cf-message" className={labelClass}>SPECIFICATION</label>
+                  <label htmlFor="cf-message" className={labelClass}>Message</label>
                   <textarea
                     id="cf-message"
                     required
@@ -165,7 +167,7 @@ export default function Contact() {
                 </div>
 
                 {error && (
-                  <p className="flex items-center gap-2 border-l-2 border-[var(--bp-red)] bg-[rgba(255,107,87,0.08)] px-4 py-2.5 text-sm text-[var(--bp-red)]">
+                  <p className="flex items-center gap-2 rounded-xl bg-[rgba(220,38,38,0.06)] px-4 py-2.5 text-sm text-[#DC2626]">
                     <AlertCircle size={14} />
                     {error}
                   </p>
@@ -174,7 +176,7 @@ export default function Contact() {
                 <button
                   type="submit"
                   disabled={sending}
-                  className="flex w-full items-center justify-center gap-2 border border-[var(--bp-cyan)] py-3.5 font-mono text-sm text-[var(--bp-cyan)] transition-colors hover:bg-[rgba(127,209,232,0.08)] disabled:cursor-not-allowed disabled:opacity-60"
+                  className="flex w-full items-center justify-center gap-2 rounded-full bg-[var(--ink)] py-3.5 text-sm font-medium text-[var(--paper)] transition-colors hover:bg-[var(--ultra-deep)] disabled:cursor-not-allowed disabled:opacity-60"
                 >
                   {sending ? (
                     <>
@@ -183,7 +185,7 @@ export default function Contact() {
                     </>
                   ) : (
                     <>
-                      Send request
+                      Send message
                       <Send size={13} />
                     </>
                   )}

@@ -3,7 +3,7 @@
 import { useEffect, useState } from "react";
 import { ExternalLink } from "lucide-react";
 import { GithubIcon } from "./Icons";
-import { SheetHeader } from "./Sheet";
+import { SectionHeader } from "./Sheet";
 import ScrollReveal from "./ScrollReveal";
 import { useSite } from "@/components/site-context";
 
@@ -13,7 +13,7 @@ type ContributionDay = {
   level: number;
 };
 
-const levels = ["rgba(127,209,232,0.08)", "rgba(127,209,232,0.28)", "rgba(127,209,232,0.5)", "rgba(127,209,232,0.75)", "#7FD1E8"];
+const levels = ["#EBEDF0", "#9BE9A8", "#40C463", "#30A14E", "#216E39"];
 
 function groupByWeek(contributions: ContributionDay[]) {
   const weeks: ContributionDay[][] = [];
@@ -62,37 +62,39 @@ export default function GitHubActivity() {
   const weeks = groupByWeek(contributions);
 
   return (
-    <section id="github" className="relative scroll-mt-20 py-16 md:py-24">
-      <div className="mx-auto max-w-5xl px-6">
+    <section id="github" className="relative scroll-mt-20 py-20 md:py-28">
+      <div className="mx-auto max-w-6xl px-6">
         <ScrollReveal>
-          <SheetHeader no="08" title="Activity plot" blurb="Contribution activity from the public record." />
+          <SectionHeader
+            title="Open source activity"
+            blurb="Contribution history and public repositories."
+          />
         </ScrollReveal>
 
         <ScrollReveal>
-          {/* The plot */}
-          <figure className="border border-[var(--bp-line)] bg-[var(--bp-panel)] p-5">
-            <figcaption className="mb-4 flex flex-wrap items-baseline justify-between gap-2 font-mono text-[10px] tracking-[0.15em] text-[var(--bp-graphite)]">
-              <span className="flex items-center gap-2">
-                <GithubIcon size={13} className="text-[var(--bp-cyan)]" />
+          <figure className="overflow-x-auto rounded-2xl border border-[var(--hairline)] bg-white p-5">
+            <figcaption className="mb-4 flex flex-wrap items-center justify-between gap-2 text-xs text-[var(--graphite)]">
+              <span className="inline-flex items-center gap-2">
+                <GithubIcon size={14} className="text-[var(--ink)]" />
                 {loading
-                  ? "PLOTTING…"
-                  : `${totalContributions.toLocaleString()} CONTRIBUTIONS / LAST 365 DAYS`}
+                  ? "Loading activity…"
+                  : `${totalContributions.toLocaleString()} contributions in the last year`}
               </span>
-              <span className="flex items-center gap-1.5">
-                LOW
+              <span className="flex items-center gap-1">
+                Less
                 {levels.map((c) => (
-                  <span key={c} className="h-2.5 w-2.5 rounded-[2px]" style={{ backgroundColor: c }} />
+                  <span key={c} className="h-3 w-3 rounded-[3px]" style={{ backgroundColor: c }} />
                 ))}
-                HIGH
+                More
               </span>
             </figcaption>
-            <div className="overflow-x-auto pb-1">
+            <div className="w-fit">
               {loading ? (
                 <div className="flex gap-[3px]" aria-hidden="true">
                   {Array.from({ length: 52 }).map((_, week) => (
                     <div key={week} className="flex flex-col gap-[3px]">
                       {Array.from({ length: 7 }).map((_, day) => (
-                        <div key={day} className="h-[11px] w-[11px] rounded-[2px] bg-[rgba(127,209,232,0.06)]" />
+                        <div key={day} className="h-[11px] w-[11px] rounded-[2px] bg-[#EBEDF0]" />
                       ))}
                     </div>
                   ))}
@@ -117,40 +119,39 @@ export default function GitHubActivity() {
           </figure>
         </ScrollReveal>
 
-        {/* Reference drawings: repositories */}
         <ScrollReveal>
-          <div className="mt-10">
-            <p className="mb-3 font-mono text-[10px] tracking-[0.2em] text-[var(--bp-graphite)]">
-              REFERENCE DRAWINGS — REPOSITORIES
-            </p>
-            <div className="border border-[var(--bp-line)] bg-[var(--bp-panel)]">
-              {SITE.repos.map((repo) => (
-                <a
-                  key={repo.name}
-                  href={`${SITE.github}/${repo.name}`}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="group grid gap-1 border-b border-[var(--bp-line-soft)] px-4 py-3.5 transition-colors last:border-b-0 hover:bg-[rgba(127,209,232,0.04)] sm:grid-cols-[180px_1fr_auto] sm:items-baseline sm:gap-4"
-                >
-                  <span className="text-sm text-[var(--bp-white)] group-hover:text-[var(--bp-cyan)]">
-                    {repo.name}
-                  </span>
-                  <span className="text-[13px] text-[var(--bp-graphite)]">{repo.description}</span>
-                  <span className="flex items-center gap-4 font-mono text-[11px] text-[var(--bp-graphite)]">
-                    <span>★{repo.stars}</span>
-                    <span>⑂{repo.forks}</span>
-                    <span className="text-[var(--bp-cyan)]">{repo.language}</span>
-                    <ExternalLink size={11} className="opacity-0 transition-opacity group-hover:opacity-100" />
-                  </span>
-                </a>
-              ))}
-            </div>
-            <p className="mt-4">
-              <a href={SITE.github} target="_blank" rel="noopener noreferrer" className="mark-link font-mono text-xs text-[var(--bp-graphite)]">
-                Full index on GitHub
+          <div className="mt-10 divide-y divide-[var(--hairline)] overflow-hidden rounded-2xl border border-[var(--hairline)] bg-white">
+            {SITE.repos.map((repo) => (
+              <a
+                key={repo.name}
+                href={`${SITE.github}/${repo.name}`}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="group grid gap-1 px-5 py-4 transition-colors hover:bg-[rgba(33,64,219,0.03)] sm:grid-cols-[180px_1fr_auto] sm:items-baseline sm:gap-6"
+              >
+                <span className="text-sm font-medium text-[var(--ink)] group-hover:text-[var(--ultra)]">
+                  {repo.name}
+                </span>
+                <span className="text-sm text-[var(--graphite)]">{repo.description}</span>
+                <span className="flex items-center gap-4 text-xs text-[var(--graphite)]">
+                  <span>★ {repo.stars}</span>
+                  <span>⑂ {repo.forks}</span>
+                  <span>{repo.language}</span>
+                  <ExternalLink size={12} className="opacity-0 transition-opacity group-hover:opacity-100" />
+                </span>
               </a>
-            </p>
+            ))}
           </div>
+          <p className="mt-5">
+            <a
+              href={SITE.github}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="text-sm font-medium text-[var(--ultra)] underline decoration-[rgba(33,64,219,0.3)] underline-offset-8 transition-colors hover:decoration-[var(--ultra)]"
+            >
+              See all repositories on GitHub
+            </a>
+          </p>
         </ScrollReveal>
       </div>
     </section>

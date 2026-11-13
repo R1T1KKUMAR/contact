@@ -1,26 +1,25 @@
 @import "tailwindcss";
 
 @theme {
-  --color-ink: #0e2a47;
-  --color-ink-deep: #0a2038;
-  --color-paper: #eaf2f8;
-  --color-draft: #7fd1e8;
-  --color-mark: #ff6b57;
-  --color-graphite: #8fa9be;
-  --font-heading: "IBM Plex Sans", ui-sans-serif, system-ui, -apple-system, sans-serif;
-  --font-body: "IBM Plex Sans", ui-sans-serif, system-ui, -apple-system, sans-serif;
-  --font-mono: "IBM Plex Mono", ui-monospace, SFMono-Regular, Menlo, Monaco, monospace;
+  --color-paper: #fafaf7;
+  --color-ink: #1b1b1f;
+  --color-graphite: #6e6e76;
+  --color-hairline: rgba(27, 27, 31, 0.1);
+  --color-ultra: #2140db;
+  --color-ultra-deep: #1433b8;
+  --color-grow: #16a34a;
+  --font-heading: "Fraunces", ui-serif, Georgia, serif;
+  --font-body: "Instrument Sans", ui-sans-serif, system-ui, -apple-system, sans-serif;
+  --font-mono: "IBM Plex Mono", ui-monospace, SFMono-Regular, Menlo, monospace;
 }
 
 :root {
-  --bp-ink: #0e2a47;
-  --bp-panel: rgba(9, 26, 45, 0.55);
-  --bp-line: rgba(127, 209, 232, 0.3);
-  --bp-line-soft: rgba(127, 209, 232, 0.1);
-  --bp-white: #eaf2f8;
-  --bp-cyan: #7fd1e8;
-  --bp-red: #ff6b57;
-  --bp-graphite: #8fa9be;
+  --paper: #fafaf7;
+  --ink: #1b1b1f;
+  --graphite: #6e6e76;
+  --hairline: rgba(27, 27, 31, 0.1);
+  --ultra: #2140db;
+  --ultra-deep: #1433b8;
 }
 
 * {
@@ -33,40 +32,22 @@ html {
 
 body {
   margin: 0;
-  color: var(--bp-white);
+  background: var(--paper);
+  color: var(--ink);
   font-family: var(--font-body);
-  background-color: var(--bp-ink);
-  background-image:
-    linear-gradient(var(--bp-line-soft) 1px, transparent 1px),
-    linear-gradient(90deg, var(--bp-line-soft) 1px, transparent 1px),
-    linear-gradient(rgba(127, 209, 232, 0.05) 1px, transparent 1px),
-    linear-gradient(90deg, rgba(127, 209, 232, 0.05) 1px, transparent 1px);
-  background-size: 140px 140px, 140px 140px, 28px 28px, 28px 28px;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   overflow-x: hidden;
 }
 
 ::selection {
-  background: rgba(127, 209, 232, 0.35);
-  color: var(--bp-white);
+  background: rgba(33, 64, 219, 0.18);
+  color: var(--ink);
 }
 
 :focus-visible {
-  outline: 2px solid var(--bp-cyan);
+  outline: 2px solid var(--ultra);
   outline-offset: 2px;
-}
-
-/* Markup-pen underline: the one hover treatment used across the set */
-.mark-link {
-  color: var(--bp-white);
-  text-decoration: underline;
-  text-decoration-color: var(--bp-line);
-  text-underline-offset: 4px;
-  transition: text-decoration-color 200ms ease, color 200ms ease;
-}
-.mark-link:hover {
-  text-decoration-color: var(--bp-red);
 }
 
 @media (prefers-reduced-motion: reduce) {

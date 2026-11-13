@@ -1,28 +1,26 @@
 "use client";
 
-export function SheetHeader({
-  no,
+export function SectionHeader({
   title,
   blurb,
 }: {
-  no: string;
   title: string;
   blurb?: string;
 }) {
   return (
     <header className="mb-12 md:mb-16">
-      <p className="font-mono text-[11px] tracking-[0.25em] text-[var(--bp-cyan)]">
-        SHEET {no}
-      </p>
-      <h2 className="mt-3 text-3xl font-semibold tracking-tight text-[var(--bp-white)] sm:text-4xl lg:text-5xl">
+      <h2
+        className="text-3xl font-medium tracking-tight text-[var(--ink)] sm:text-4xl lg:text-[2.75rem] lg:leading-[1.1]"
+        style={{ fontFamily: "var(--font-heading)" }}
+      >
         {title}
       </h2>
       {blurb && (
-        <p className="mt-4 max-w-xl text-[15px] leading-relaxed text-[var(--bp-graphite)]">
+        <p className="mt-4 max-w-2xl text-[15px] leading-relaxed text-[var(--graphite)] sm:text-base">
           {blurb}
         </p>
       )}
-      <div className="mt-8 h-px bg-[var(--bp-line-soft)]" />
+      <div className="mt-10 h-px bg-[var(--hairline)]" />
     </header>
   );
 }
