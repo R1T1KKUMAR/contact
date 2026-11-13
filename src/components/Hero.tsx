@@ -5,12 +5,12 @@ import { useSite } from "@/components/site-context";
 
 const container = {
   hidden: {},
-  show: { transition: { staggerChildren: 0.1 } },
+  show: { transition: { staggerChildren: 0.09 } },
 };
 
 const item = {
-  hidden: { opacity: 0, y: 16 },
-  show: { opacity: 1, y: 0, transition: { duration: 0.6, ease: "easeOut" as const } },
+  hidden: { opacity: 0, y: 18 },
+  show: { opacity: 1, y: 0, transition: { duration: 0.5, ease: "easeOut" as const } },
 };
 
 export default function Hero() {
@@ -28,35 +28,43 @@ export default function Hero() {
   const reveal = reduceMotion ? {} : { variants: item };
 
   return (
-    <section id="top" className="relative flex min-h-[82vh] items-center px-6 pb-16 pt-28">
-      <div className="mx-auto grid w-full max-w-6xl items-center gap-12 lg:grid-cols-[1fr_330px]">
+    <section id="top" className="relative overflow-hidden px-6 pb-16 pt-28">
+      {/* Soft background blobs — two, quiet */}
+      <div
+        aria-hidden="true"
+        className="pointer-events-none absolute -right-24 -top-24 h-96 w-96 rounded-full bg-[var(--butter)] opacity-50 blur-3xl"
+      />
+      <div
+        aria-hidden="true"
+        className="pointer-events-none absolute -left-32 top-1/2 h-72 w-72 rounded-full bg-[var(--violet)] opacity-10 blur-3xl"
+      />
+
+      <div className="relative mx-auto grid w-full max-w-6xl items-center gap-14 lg:grid-cols-[1fr_360px]">
         <motion.div {...animationProps}>
+          {/* Sticker badge */}
           <motion.p
             {...reveal}
-            className="flex items-center gap-2.5 text-sm text-[var(--graphite)]"
+            className="hard-shadow-sm inline-block -rotate-2 rounded-full border-2 border-[var(--ink)] bg-[var(--pink)] px-4 py-1.5 text-xs font-bold uppercase tracking-wide text-[var(--ink)]"
           >
-            <span className="relative flex h-2 w-2">
-              <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-[var(--grow)] opacity-60" />
-              <span className="relative inline-flex h-2 w-2 rounded-full bg-[var(--grow)]" />
-            </span>
-            Available for opportunities
+            Open to work
           </motion.p>
 
           <motion.h1
             {...reveal}
-            className="mt-6 text-4xl font-medium leading-[1.05] tracking-tight text-[var(--ink)] sm:text-6xl lg:text-[4.25rem]"
+            className="mt-7 text-[2.9rem] font-extrabold leading-[1.02] tracking-tight sm:text-6xl lg:text-7xl"
             style={{ fontFamily: "var(--font-heading)" }}
           >
-            {SITE.name}
-            <span className="text-[var(--ultra)]">.</span>
+            {SITE.name.split(" ")[0]}{" "}
+            <span className="squiggle">{SITE.name.split(" ").slice(1).join(" ")}</span>
+            <span className="text-[var(--orange)]">.</span>
           </motion.h1>
 
           <motion.p
             {...reveal}
-            className="mt-4 text-lg text-[var(--graphite)] sm:text-xl"
+            className="mt-5 text-lg font-medium sm:text-xl"
             style={{ fontFamily: "var(--font-heading)" }}
           >
-            {SITE.role} &amp; {SITE.roleAlt}
+            {SITE.role} <span className="text-[var(--violet)]">&amp;</span> {SITE.roleAlt}
           </motion.p>
 
           <motion.p
@@ -69,20 +77,20 @@ export default function Hero() {
           <motion.div {...reveal} className="mt-9 flex flex-wrap items-center gap-5">
             <a
               href="#projects"
-              className="rounded-full bg-[var(--ink)] px-6 py-3 text-sm font-medium text-[var(--paper)] transition-colors hover:bg-[var(--ultra-deep)]"
+              className="hard-shadow-sm rounded-full border-2 border-[var(--ink)] bg-[var(--orange)] px-6 py-3 text-sm font-bold text-[var(--ink)] transition-transform hover:-translate-y-0.5 active:translate-x-0.5 active:translate-y-0.5"
             >
-              View projects
+              See my work
             </a>
             <a
               href="#contact"
-              className="text-sm font-medium text-[var(--ink)] underline decoration-[var(--hairline)] underline-offset-8 transition-colors hover:decoration-[var(--ultra)]"
+              className="text-sm font-semibold text-[var(--ink)] underline decoration-[var(--violet)] decoration-2 underline-offset-8 transition-colors hover:text-[var(--violet)]"
             >
               Get in touch
             </a>
             {SITE.resumeUrl && (
               <a
                 href={SITE.resumeUrl}
-                className="text-sm font-medium text-[var(--graphite)] underline decoration-[var(--hairline)] underline-offset-8 transition-colors hover:text-[var(--ink)] hover:decoration-[var(--ultra)]"
+                className="text-sm font-semibold text-[var(--graphite)] underline decoration-[var(--hairline)] decoration-2 underline-offset-8 transition-colors hover:text-[var(--ink)]"
               >
                 Download resume
               </a>
@@ -90,22 +98,21 @@ export default function Hero() {
           </motion.div>
         </motion.div>
 
-        {/* Portrait */}
-        <motion.div
-          {...reveal}
-          className="hidden lg:block"
-        >
-          <div className="overflow-hidden rounded-2xl ring-1 ring-black/5">
-            {/* eslint-disable-next-line @next/next/no-img-element */}
-            <img
-              src={SITE.profileImage || "/images/Profile.jpeg"}
-              alt={SITE.name}
-              className="aspect-[3/4] w-full object-cover grayscale-[25%] transition-all duration-700 hover:grayscale-0"
-            />
+        {/* Portrait with sticker */}
+        <motion.div {...reveal} className="hidden lg:block">
+          <div className="relative">
+            <div className="hard-shadow overflow-hidden rounded-2xl border-2 border-[var(--ink)]">
+              {/* eslint-disable-next-line @next/next/no-img-element */}
+              <img
+                src={SITE.profileImage || "/images/Profile.jpeg"}
+                alt={SITE.name}
+                className="aspect-[3/4] w-full object-cover"
+              />
+            </div>
+            <p className="hard-shadow-sm absolute -bottom-4 -left-4 -rotate-3 rounded-full border-2 border-[var(--ink)] bg-[var(--butter)] px-3.5 py-1.5 text-xs font-bold">
+              {SITE.location}
+            </p>
           </div>
-          <p className="mt-3 text-center text-xs text-[var(--graphite)]">
-            {SITE.location}
-          </p>
         </motion.div>
       </div>
     </section>

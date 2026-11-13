@@ -14,6 +14,8 @@ const iconMap: Record<string, React.ElementType> = {
   Zap,
 };
 
+const cardColors = ["var(--butter)", "var(--pink)", "var(--violet)", "var(--orange)"];
+
 export default function Achievements() {
   const SITE = useSite();
 
@@ -25,19 +27,25 @@ export default function Achievements() {
         </ScrollReveal>
 
         <ScrollReveal>
-          <div className="grid gap-10 sm:grid-cols-2 lg:grid-cols-4">
-            {SITE.achievements.map((achievement) => {
+          <div className="grid gap-5 sm:grid-cols-2 lg:grid-cols-4">
+            {SITE.achievements.map((achievement, i) => {
               const Icon = iconMap[achievement.icon] || Award;
               return (
-                <div key={achievement.title} className="border-t-2 border-[var(--ink)] pt-5">
-                  <Icon size={17} className="text-[var(--ultra)]" />
+                <div
+                  key={achievement.title}
+                  className="hard-shadow-sm lift rounded-2xl border-2 border-[var(--ink)] p-5"
+                  style={{ backgroundColor: cardColors[i % 4] }}
+                >
+                  <div className="flex h-9 w-9 items-center justify-center rounded-xl border-2 border-[var(--ink)] bg-[var(--card)]">
+                    <Icon size={15} />
+                  </div>
                   <h3
-                    className="mt-4 text-lg font-medium leading-snug text-[var(--ink)]"
+                    className="mt-4 text-base font-bold leading-snug"
                     style={{ fontFamily: "var(--font-heading)" }}
                   >
                     {achievement.title}
                   </h3>
-                  <p className="mt-2 text-sm leading-relaxed text-[var(--graphite)]">
+                  <p className="mt-1.5 text-[13px] leading-relaxed text-[var(--ink)]/70">
                     {achievement.description}
                   </p>
                 </div>

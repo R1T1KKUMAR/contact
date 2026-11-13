@@ -72,7 +72,7 @@ export default function GitHubActivity() {
         </ScrollReveal>
 
         <ScrollReveal>
-          <figure className="overflow-x-auto rounded-2xl border border-[var(--hairline)] bg-[var(--card)] p-5">
+          <figure className="hard-shadow-sm overflow-x-auto rounded-2xl border-2 border-[var(--ink)] bg-[var(--card)] p-5">
             <figcaption className="mb-4 flex flex-wrap items-center justify-between gap-2 text-xs text-[var(--graphite)]">
               <span className="inline-flex items-center gap-2">
                 <GithubIcon size={14} className="text-[var(--ink)]" />
@@ -120,23 +120,31 @@ export default function GitHubActivity() {
         </ScrollReveal>
 
         <ScrollReveal>
-          <div className="mt-10 divide-y divide-[var(--hairline)] overflow-hidden rounded-2xl border border-[var(--hairline)] bg-[var(--card)]">
-            {SITE.repos.map((repo) => (
+          <div className="hard-shadow-sm mt-8 divide-y-2 divide-[var(--hairline)] rounded-2xl border-2 border-[var(--ink)] bg-[var(--card)]">
+            {SITE.repos.map((repo, i) => (
               <a
                 key={repo.name}
                 href={`${SITE.github}/${repo.name}`}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="group grid gap-1 px-5 py-4 transition-colors hover:bg-[rgba(33,64,219,0.03)] sm:grid-cols-[180px_1fr_auto] sm:items-baseline sm:gap-6"
+                className="group grid gap-1 px-5 py-4 transition-colors hover:bg-[var(--paper)] sm:grid-cols-[180px_1fr_auto] sm:items-baseline sm:gap-6"
               >
-                <span className="text-sm font-medium text-[var(--ink)] group-hover:text-[var(--ultra)]">
+                <span
+                  className="text-sm font-bold group-hover:text-[var(--orange)]"
+                  style={{ fontFamily: "var(--font-heading)" }}
+                >
                   {repo.name}
                 </span>
                 <span className="text-sm text-[var(--graphite)]">{repo.description}</span>
                 <span className="flex items-center gap-4 text-xs text-[var(--graphite)]">
                   <span>★ {repo.stars}</span>
                   <span>⑂ {repo.forks}</span>
-                  <span>{repo.language}</span>
+                  <span
+                    className="rounded-full border-2 border-[var(--ink)] px-2 py-0.5 text-[10px] font-bold text-[var(--ink)]"
+                    style={{ backgroundColor: ["var(--butter)", "var(--pink)", "var(--violet)"][i % 3] }}
+                  >
+                    {repo.language}
+                  </span>
                   <ExternalLink size={12} className="opacity-0 transition-opacity group-hover:opacity-100" />
                 </span>
               </a>
@@ -147,7 +155,7 @@ export default function GitHubActivity() {
               href={SITE.github}
               target="_blank"
               rel="noopener noreferrer"
-              className="text-sm font-medium text-[var(--ultra)] underline decoration-[rgba(33,64,219,0.3)] underline-offset-8 transition-colors hover:decoration-[var(--ultra)]"
+              className="text-sm font-bold underline decoration-[var(--orange)] decoration-2 underline-offset-8 transition-colors hover:text-[var(--orange)]"
             >
               See all repositories on GitHub
             </a>

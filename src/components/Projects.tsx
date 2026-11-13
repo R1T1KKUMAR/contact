@@ -11,6 +11,8 @@ import type { SiteData } from "@/config/site";
 
 type Project = SiteData["projects"][0];
 
+const tagColors = ["var(--butter)", "var(--pink)", "var(--violet)", "var(--orange)"];
+
 function DetailModal({
   project,
   onClose,
@@ -30,47 +32,45 @@ function DetailModal({
       initial={{ opacity: 0 }}
       animate={{ opacity: 1 }}
       exit={{ opacity: 0 }}
-      className="fixed inset-0 z-[60] flex items-center justify-center bg-[rgba(27,27,31,0.4)] p-4 backdrop-blur-sm"
+      className="fixed inset-0 z-[60] flex items-center justify-center bg-[rgba(34,29,36,0.45)] p-4"
       onClick={onClose}
     >
       <motion.div
-        initial={{ opacity: 0, y: 24, scale: 0.98 }}
-        animate={{ opacity: 1, y: 0, scale: 1 }}
-        exit={{ opacity: 0, y: 24, scale: 0.98 }}
+        initial={{ opacity: 0, y: 28, rotate: 1 }}
+        animate={{ opacity: 1, y: 0, rotate: 0 }}
+        exit={{ opacity: 0, y: 28, rotate: 1 }}
         transition={{ duration: 0.25, ease: "easeOut" }}
         onClick={(e) => e.stopPropagation()}
         role="dialog"
         aria-modal="true"
         aria-label={`${project.title} case study`}
-        className="max-h-[85vh] w-full max-w-2xl overflow-y-auto rounded-2xl bg-[var(--card)] shadow-xl shadow-black/10 ring-1 ring-black/5"
+        className="hard-shadow max-h-[85vh] w-full max-w-2xl overflow-y-auto rounded-3xl border-2 border-[var(--ink)] bg-[var(--card)]"
       >
-        <div className="sticky top-0 flex items-center justify-between border-b border-[var(--hairline)] bg-[var(--card)] px-6 py-4">
-          <p className="text-xs font-medium uppercase tracking-wider text-[var(--graphite)]">
+        <div className="sticky top-0 flex items-center justify-between border-b-2 border-[var(--ink)] bg-[var(--butter)] px-6 py-3.5">
+          <p className="text-xs font-bold uppercase tracking-wider text-[var(--ink)]">
             Case study
           </p>
           <button
             onClick={onClose}
             aria-label="Close case study"
-            className="text-[var(--graphite)] transition-colors hover:text-[var(--ink)]"
+            className="text-[var(--ink)]"
           >
             <X size={18} />
           </button>
         </div>
         <div className="p-6 sm:p-8">
           <h3
-            className="text-2xl font-medium tracking-tight text-[var(--ink)]"
+            className="text-2xl font-extrabold tracking-tight"
             style={{ fontFamily: "var(--font-heading)" }}
           >
             {project.title}
           </h3>
-          <p className="mt-2 text-sm text-[var(--graphite)]">
-            {project.techStack.join(", ")}
-          </p>
+          <p className="mt-2 text-sm text-[var(--graphite)]">{project.techStack.join(", ")}</p>
 
           <div className="mt-8 space-y-7">
             {sections.map(([label, text]) => (
               <div key={label}>
-                <p className="text-xs font-medium uppercase tracking-wider text-[var(--ultra)]">
+                <p className="text-xs font-bold uppercase tracking-wider text-[var(--violet)]">
                   {label}
                 </p>
                 <p className="mt-2 text-[15px] leading-relaxed text-[var(--graphite)]">{text}</p>
@@ -79,9 +79,13 @@ function DetailModal({
           </div>
 
           {project.metrics.length > 0 && (
-            <div className="mt-8 grid gap-px overflow-hidden rounded-2xl bg-[var(--hairline)] sm:grid-cols-3">
-              {project.metrics.map((metric) => (
-                <p key={metric} className="bg-[var(--card)] px-5 py-4 text-sm font-medium text-[var(--ink)]">
+            <div className="mt-8 grid gap-3 sm:grid-cols-3">
+              {project.metrics.map((metric, i) => (
+                <p
+                  key={metric}
+                  className="hard-shadow-sm rounded-xl border-2 border-[var(--ink)] px-4 py-3 text-sm font-semibold"
+                  style={{ backgroundColor: tagColors[i % 4] }}
+                >
                   {metric}
                 </p>
               ))}
@@ -107,30 +111,48 @@ export default function Projects() {
           />
         </ScrollReveal>
 
-        <div className="space-y-16">
+        <div className="space-y-14">
           {SITE.projects.map((project, i) => (
             <ScrollReveal key={project.title}>
               <article
-                className={`grid items-center gap-8 lg:grid-cols-2 lg:gap-14 ${
+                className={`grid items-center gap-8 lg:grid-cols-2 lg:gap-12 ${
                   i % 2 === 1 ? "lg:[&>figure]:order-2" : ""
                 }`}
               >
-                <figure className="overflow-hidden rounded-2xl ring-1 ring-black/5">
+                <figure className="hard-shadow relative overflow-hidden rounded-2xl border-2 border-[var(--ink)] transition-transform duration-300 hover:-translate-y-1">
                   {/* eslint-disable-next-line @next/next/no-img-element */}
                   <img
                     src={project.image}
                     alt={project.title}
                     loading="lazy"
-                    className="aspect-[3/2] w-full object-cover transition-transform duration-700 hover:scale-[1.015]"
+                    className="aspect-[3/2] w-full object-cover"
                   />
+                  <span
+                    className="absolute left-4 top-4 -rotate-2 rounded-full border-2 border-[var(--ink)] px-3 py-1 text-xs font-bold"
+                    style={{ backgroundColor: tagColors[i % 4] }}
+                  >
+                    {String(i + 1).padStart(2, "0")}
+                  </span>
                 </figure>
 
                 <div>
-                  <p className="text-xs font-medium uppercase tracking-wider text-[var(--graphite)]">
-                    {String(i + 1).padStart(2, "0")} — {project.tags.join(", ")}
-                  </p>
+                  <div className="flex flex-wrap gap-2">
+                    {project.tags.map((tag, ti) => (
+                      <span
+                        key={tag}
+                        className="rounded-full border border-[var(--hairline)] bg-[var(--card)] px-2.5 py-1 text-xs font-medium text-[var(--ink)]"
+                        style={
+                          ti % 2 === 0
+                            ? { backgroundColor: "var(--paper)" }
+                            : { backgroundColor: "var(--butter)" }
+                        }
+                      >
+                        {tag}
+                      </span>
+                    ))}
+                  </div>
                   <h3
-                    className="mt-3 text-2xl font-medium tracking-tight text-[var(--ink)] sm:text-3xl"
+                    className="mt-4 text-2xl font-extrabold tracking-tight sm:text-3xl"
                     style={{ fontFamily: "var(--font-heading)" }}
                   >
                     {project.title}
@@ -141,7 +163,7 @@ export default function Projects() {
                   <div className="mt-6 flex flex-wrap items-center gap-5">
                     <button
                       onClick={() => setDetail(project)}
-                      className="text-sm font-medium text-[var(--ultra)] underline decoration-[rgba(33,64,219,0.3)] underline-offset-8 transition-colors hover:decoration-[var(--ultra)]"
+                      className="hard-shadow-sm rounded-full border-2 border-[var(--ink)] bg-[var(--violet)] px-5 py-2 text-sm font-bold text-[var(--card)] transition-transform hover:-translate-y-0.5"
                     >
                       Read case study
                     </button>
@@ -150,7 +172,7 @@ export default function Projects() {
                         href={project.liveUrl}
                         target="_blank"
                         rel="noopener noreferrer"
-                        className="inline-flex items-center gap-1.5 text-sm text-[var(--graphite)] transition-colors hover:text-[var(--ink)]"
+                        className="inline-flex items-center gap-1.5 text-sm font-medium text-[var(--ink)] underline decoration-[var(--orange)] decoration-2 underline-offset-8"
                       >
                         Live demo <ExternalLink size={13} />
                       </a>
@@ -160,7 +182,7 @@ export default function Projects() {
                         href={project.githubUrl}
                         target="_blank"
                         rel="noopener noreferrer"
-                        className="inline-flex items-center gap-1.5 text-sm text-[var(--graphite)] transition-colors hover:text-[var(--ink)]"
+                        className="inline-flex items-center gap-1.5 text-sm font-medium text-[var(--graphite)] transition-colors hover:text-[var(--ink)]"
                       >
                         <GithubIcon size={14} /> GitHub
                       </a>

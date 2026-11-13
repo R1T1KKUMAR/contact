@@ -10,7 +10,7 @@ export function SectionHeader({
   return (
     <header className="mb-10 md:mb-14">
       <h2
-        className="text-2xl font-medium tracking-tight text-[var(--ink)] sm:text-3xl lg:text-[2.25rem] lg:leading-[1.15]"
+        className="text-2xl font-extrabold tracking-tight sm:text-4xl"
         style={{ fontFamily: "var(--font-heading)" }}
       >
         {title}
@@ -20,7 +20,7 @@ export function SectionHeader({
           {blurb}
         </p>
       )}
-      <div className="mt-8 h-px bg-[var(--hairline)]" />
+      <div className="mt-7 h-1 w-14 rounded-full bg-[var(--orange)]" />
     </header>
   );
 }

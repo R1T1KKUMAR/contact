@@ -8,9 +8,9 @@ import emailjs from "@emailjs/browser";
 import { useSite } from "@/components/site-context";
 
 const inputClass =
-  "w-full border-b border-[var(--hairline)] bg-transparent px-0 py-2.5 text-[15px] text-[var(--ink)] placeholder-[var(--graphite)]/50 transition-colors focus:border-[var(--ultra)] focus:outline-none";
+  "w-full rounded-xl border-2 border-[var(--ink)] bg-[var(--paper)] px-4 py-2.5 text-[15px] font-medium text-[var(--ink)] placeholder-[var(--graphite)]/60 transition-shadow focus:shadow-[3px_3px_0_var(--ink)] focus:outline-none";
 
-const labelClass = "text-xs font-medium uppercase tracking-wider text-[var(--graphite)]";
+const labelClass = "text-xs font-bold uppercase tracking-wider text-[var(--ink)]";
 
 export default function Contact() {
   const SITE = useSite();
@@ -81,17 +81,19 @@ export default function Contact() {
         </ScrollReveal>
 
         <ScrollReveal>
-          <div className="max-w-2xl rounded-2xl border border-[var(--hairline)] bg-[var(--card)] p-7 sm:p-10">
+          <div className="hard-shadow max-w-2xl rounded-2xl border-2 border-[var(--ink)] bg-[var(--card)] p-7 sm:p-10">
             {submitted ? (
               <div className="flex flex-col items-center justify-center py-14">
-                <CheckCircle2 className="h-12 w-12 text-[var(--grow)]" />
+                <span className="hard-shadow-sm flex h-14 w-14 items-center justify-center rounded-full border-2 border-[var(--ink)] bg-[var(--grow)]/20">
+                  <CheckCircle2 className="h-8 w-8 text-[var(--grow)]" />
+                </span>
                 <h3
-                  className="mt-5 text-2xl font-medium text-[var(--ink)]"
+                  className="mt-6 text-2xl font-extrabold text-[var(--ink)]"
                   style={{ fontFamily: "var(--font-heading)" }}
                 >
                   Message sent
                 </h3>
-                <p className="mt-2 text-sm text-[var(--graphite)]">
+                <p className="mt-2 text-sm font-medium text-[var(--graphite)]">
                   Thanks — I&apos;ll get back to you soon.
                 </p>
               </div>
@@ -167,7 +169,7 @@ export default function Contact() {
                 </div>
 
                 {error && (
-                  <p className="flex items-center gap-2 rounded-xl bg-[rgba(220,38,38,0.06)] px-4 py-2.5 text-sm text-[#DC2626]">
+                  <p className="flex items-center gap-2 rounded-xl border-2 border-[#DC2626] bg-[#DC2626]/10 px-4 py-2.5 text-sm font-semibold text-[#DC2626]">
                     <AlertCircle size={14} />
                     {error}
                   </p>
@@ -176,7 +178,7 @@ export default function Contact() {
                 <button
                   type="submit"
                   disabled={sending}
-                  className="flex w-full items-center justify-center gap-2 rounded-full bg-[var(--ink)] py-3 text-sm font-medium text-[var(--paper)] transition-colors hover:bg-[var(--ultra-deep)] disabled:cursor-not-allowed disabled:opacity-60"
+                  className="hard-shadow-sm flex w-full items-center justify-center gap-2 rounded-full border-2 border-[var(--ink)] bg-[var(--orange)] py-3 text-sm font-bold text-[var(--ink)] transition-all hover:-translate-y-0.5 disabled:translate-y-0 disabled:cursor-not-allowed disabled:opacity-60"
                 >
                   {sending ? (
                     <>

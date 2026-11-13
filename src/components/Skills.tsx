@@ -4,6 +4,8 @@ import { SectionHeader } from "./Sheet";
 import ScrollReveal from "./ScrollReveal";
 import { useSite } from "@/components/site-context";
 
+const categoryColors = ["var(--butter)", "var(--pink)", "var(--violet)", "var(--orange)"];
+
 export default function Skills() {
   const SITE = useSite();
 
@@ -15,18 +17,31 @@ export default function Skills() {
         </ScrollReveal>
 
         <ScrollReveal>
-          <div className="divide-y divide-[var(--hairline)] border-y border-[var(--hairline)]">
-            {SITE.skills.map((skill) => (
+          <div className="grid gap-5 sm:grid-cols-2">
+            {SITE.skills.map((skill, i) => (
               <div
                 key={skill.category}
-                className="group grid gap-2 py-6 sm:grid-cols-[200px_1fr] sm:items-baseline sm:gap-8"
+                className="hard-shadow-sm lift rounded-2xl border-2 border-[var(--ink)] bg-[var(--card)] p-5"
               >
-                <h3 className="text-base font-medium text-[var(--ink)] transition-colors group-hover:text-[var(--ultra)]">
-                  {skill.category}
-                </h3>
-                <p className="text-[15px] leading-relaxed text-[var(--graphite)]">
-                  {skill.technologies.join(", ")}
-                </p>
+                <div className="flex items-center gap-2.5">
+                  <span
+                    className="h-3 w-3 rounded-full border-2 border-[var(--ink)]"
+                    style={{ backgroundColor: categoryColors[i % 4] }}
+                  />
+                  <h3 className="text-base font-bold" style={{ fontFamily: "var(--font-heading)" }}>
+                    {skill.category}
+                  </h3>
+                </div>
+                <div className="mt-4 flex flex-wrap gap-2">
+                  {skill.technologies.map((tech) => (
+                    <span
+                      key={tech}
+                      className="rounded-full border border-[var(--hairline)] bg-[var(--paper)] px-2.5 py-1 text-xs font-medium text-[var(--ink)]"
+                    >
+                      {tech}
+                    </span>
+                  ))}
+                </div>
               </div>
             ))}
           </div>

@@ -1,14 +1,15 @@
 import type { Metadata } from "next";
-import { Fraunces, Instrument_Sans, IBM_Plex_Mono } from "next/font/google";
+import { Bricolage_Grotesque, Instrument_Sans, IBM_Plex_Mono } from "next/font/google";
 import "./globals.css";
 import Navbar from "@/components/Navbar";
+import Ticker from "@/components/Ticker";
 import Footer from "@/components/Footer";
 import { SiteProvider } from "@/components/site-context";
 import { getSiteContent } from "@/lib/site-data";
 
-const fraunces = Fraunces({
+const fraunces = Bricolage_Grotesque({
   subsets: ["latin"],
-  weight: ["400", "500", "600"],
+  weight: ["400", "500", "600", "700", "800"],
   variable: "--font-heading",
   display: "swap",
 });

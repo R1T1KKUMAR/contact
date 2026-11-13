@@ -20,39 +20,55 @@ export default function About() {
     <section id="about" className="relative scroll-mt-20 py-14 md:py-20">
       <div className="mx-auto max-w-6xl px-6">
         <ScrollReveal>
-          <SectionHeader title="About" blurb="A short introduction." />
+          <SectionHeader title="Hey, I'm Ritik" blurb="A short introduction." />
         </ScrollReveal>
 
         <ScrollReveal>
-          <div className="grid gap-12 lg:grid-cols-[1fr_340px] lg:gap-20">
+          <div className="grid gap-10 lg:grid-cols-[1fr_340px] lg:gap-16">
             <div className="space-y-6">
               <p
-                className="text-xl leading-snug text-[var(--ink)] sm:text-2xl"
+                className="text-xl font-medium leading-snug sm:text-2xl"
                 style={{ fontFamily: "var(--font-heading)" }}
               >
                 {SITE.about.bio}
               </p>
               <div>
-                <p className="text-xs font-medium uppercase tracking-wider text-[var(--graphite)]">
+                <p className="text-xs font-bold uppercase tracking-wider text-[var(--violet)]">
                   What I value
                 </p>
-                <p className="mt-3 text-[15px] leading-relaxed text-[var(--graphite)]">
-                  {SITE.about.values.join(", ")}.
-                </p>
+                <div className="mt-3 flex flex-wrap gap-2">
+                  {SITE.about.values.map((value, i) => (
+                    <span
+                      key={value}
+                      className="rounded-full border-2 border-[var(--ink)] px-3 py-1 text-xs font-semibold"
+                      style={{
+                        backgroundColor: [
+                          "var(--butter)",
+                          "var(--pink)",
+                          "var(--violet)",
+                          "var(--orange)",
+                        ][i % 4],
+                        color: i % 4 === 2 ? "var(--card)" : "var(--ink)",
+                      }}
+                    >
+                      {value}
+                    </span>
+                  ))}
+                </div>
               </div>
             </div>
 
-            <dl className="h-fit divide-y divide-[var(--hairline)] rounded-2xl border border-[var(--hairline)] bg-[var(--card)] px-5">
+            <dl className="hard-shadow h-fit divide-y-2 divide-[var(--hairline)] rounded-2xl border-2 border-[var(--ink)] bg-[var(--card)] px-5">
               <div className="flex items-center gap-2 py-3.5">
-                <GraduationCap size={15} className="text-[var(--ultra)]" />
-                <p className="text-xs font-medium uppercase tracking-wider text-[var(--graphite)]">
+                <GraduationCap size={15} className="text-[var(--orange)]" />
+                <p className="text-xs font-bold uppercase tracking-wider text-[var(--graphite)]">
                   At a glance
                 </p>
               </div>
               {facts.map(([term, value]) => (
-                <div key={term} className="py-3.5">
+                <div key={term} className="py-3">
                   <dt className="text-xs text-[var(--graphite)]">{term}</dt>
-                  <dd className="mt-0.5 text-sm font-medium text-[var(--ink)]">{value}</dd>
+                  <dd className="mt-0.5 text-sm font-semibold text-[var(--ink)]">{value}</dd>
                 </div>
               ))}
             </dl>

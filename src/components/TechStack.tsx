@@ -7,7 +7,6 @@ import { useSite } from "@/components/site-context";
 export default function TechStack() {
   const SITE = useSite();
 
-  // Group by category, keep config order
   const groups: { category: string; names: string[] }[] = [];
   for (const tech of SITE.techStack) {
     const existing = groups.find((g) => g.category === tech.category);
@@ -23,13 +22,16 @@ export default function TechStack() {
         </ScrollReveal>
 
         <ScrollReveal>
-          <div className="grid gap-x-14 gap-y-8 sm:grid-cols-2">
-            {groups.map((group) => (
+          <div className="grid gap-x-12 gap-y-7 sm:grid-cols-2">
+            {groups.map((group, i) => (
               <div key={group.category}>
-                <p className="text-xs font-medium uppercase tracking-wider text-[var(--graphite)]">
+                <p
+                  className="text-xs font-bold uppercase tracking-wider"
+                  style={{ color: ["var(--orange)", "var(--violet)", "var(--pink)"][i % 3] }}
+                >
                   {group.category}
                 </p>
-                <p className="mt-2.5 text-[15px] leading-relaxed text-[var(--ink)]">
+                <p className="mt-2 text-[15px] font-medium leading-relaxed text-[var(--ink)]">
                   {group.names.join(", ")}
                 </p>
               </div>

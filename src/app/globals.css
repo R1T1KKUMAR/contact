@@ -1,27 +1,31 @@
 @import "tailwindcss";
 
 @theme {
-  --color-paper: #f2f1eb;
-  --color-ink: #26262b;
-  --color-graphite: #6f6f78;
-  --color-hairline: rgba(38, 38, 43, 0.12);
-  --color-ultra: #2f4bc2;
-  --color-ultra-deep: #233e9e;
+  --color-paper: #fff8ee;
+  --color-card: #ffffff;
+  --color-ink: #221d24;
+  --color-graphite: #6e6670;
+  --color-hairline: rgba(34, 29, 36, 0.15);
+  --color-orange: #ff6b35;
+  --color-pink: #ff3e8f;
+  --color-violet: #7c5cff;
+  --color-butter: #ffd23f;
   --color-grow: #15803d;
-  --color-card: #fcfbf8;
-  --font-heading: "Fraunces", ui-serif, Georgia, serif;
+  --font-heading: "Bricolage Grotesque", ui-sans-serif, system-ui, sans-serif;
   --font-body: "Instrument Sans", ui-sans-serif, system-ui, -apple-system, sans-serif;
   --font-mono: "IBM Plex Mono", ui-monospace, SFMono-Regular, Menlo, monospace;
 }
 
 :root {
-  --paper: #f2f1eb;
-  --card: #fcfbf8;
-  --ink: #26262b;
-  --graphite: #6f6f78;
-  --hairline: rgba(38, 38, 43, 0.12);
-  --ultra: #2f4bc2;
-  --ultra-deep: #233e9e;
+  --paper: #fff8ee;
+  --card: #ffffff;
+  --ink: #221d24;
+  --graphite: #6e6670;
+  --hairline: rgba(34, 29, 36, 0.15);
+  --orange: #ff6b35;
+  --pink: #ff3e8f;
+  --violet: #7c5cff;
+  --butter: #ffd23f;
 }
 
 * {
@@ -43,13 +47,49 @@ body {
 }
 
 ::selection {
-  background: rgba(47, 75, 194, 0.15);
+  background: var(--butter);
   color: var(--ink);
 }
 
 :focus-visible {
-  outline: 2px solid var(--ultra);
+  outline: 3px solid var(--violet);
   outline-offset: 2px;
+}
+
+/* Chunky offset shadows — the one shadow language in the whole design */
+.hard-shadow {
+  box-shadow: 6px 6px 0 var(--ink);
+}
+.hard-shadow-sm {
+  box-shadow: 4px 4px 0 var(--ink);
+}
+.lift {
+  transition: transform 200ms ease, box-shadow 200ms ease;
+}
+.lift:hover {
+  transform: translate(-2px, -2px);
+  box-shadow: 8px 8px 0 var(--ink);
+}
+
+/* Squiggly underline */
+.squiggle {
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='40' height='6' viewBox='0 0 40 6'%3E%3Cpath d='M0 3 Q 5 0 10 3 T 20 3 T 30 3 T 40 3' fill='none' stroke='%23FF6B35' stroke-width='2.5'/%3E%3C/svg%3E");
+  background-repeat: repeat-x;
+  background-position: 0 100%;
+  background-size: 40px 6px;
+  padding-bottom: 8px;
+}
+
+@keyframes marquee {
+  from {
+    transform: translateX(0);
+  }
+  to {
+    transform: translateX(-50%);
+  }
+}
+.marquee-track {
+  animation: marquee 28s linear infinite;
 }
 
 @media (prefers-reduced-motion: reduce) {
