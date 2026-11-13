@@ -62,7 +62,7 @@ export default function GitHubActivity() {
   const weeks = groupByWeek(contributions);
 
   return (
-    <section id="github" className="relative scroll-mt-20 py-20 md:py-28">
+    <section id="github" className="relative scroll-mt-20 py-14 md:py-20">
       <div className="mx-auto max-w-6xl px-6">
         <ScrollReveal>
           <SectionHeader
@@ -72,7 +72,7 @@ export default function GitHubActivity() {
         </ScrollReveal>
 
         <ScrollReveal>
-          <figure className="overflow-x-auto rounded-2xl border border-[var(--hairline)] bg-white p-5">
+          <figure className="overflow-x-auto rounded-2xl border border-[var(--hairline)] bg-[var(--card)] p-5">
             <figcaption className="mb-4 flex flex-wrap items-center justify-between gap-2 text-xs text-[var(--graphite)]">
               <span className="inline-flex items-center gap-2">
                 <GithubIcon size={14} className="text-[var(--ink)]" />
@@ -120,7 +120,7 @@ export default function GitHubActivity() {
         </ScrollReveal>
 
         <ScrollReveal>
-          <div className="mt-10 divide-y divide-[var(--hairline)] overflow-hidden rounded-2xl border border-[var(--hairline)] bg-white">
+          <div className="mt-10 divide-y divide-[var(--hairline)] overflow-hidden rounded-2xl border border-[var(--hairline)] bg-[var(--card)]">
             {SITE.repos.map((repo) => (
               <a
                 key={repo.name}

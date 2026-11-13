@@ -8,7 +8,7 @@ export default function Experience() {
   const SITE = useSite();
 
   return (
-    <section id="experience" className="relative scroll-mt-20 py-20 md:py-28">
+    <section id="experience" className="relative scroll-mt-20 py-14 md:py-20">
       <div className="mx-auto max-w-6xl px-6">
         <ScrollReveal>
           <SectionHeader title="Experience" blurb="Where the work has happened." />

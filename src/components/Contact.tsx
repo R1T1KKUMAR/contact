@@ -71,7 +71,7 @@ export default function Contact() {
   };
 
   return (
-    <section id="contact" className="relative scroll-mt-20 py-20 md:py-28">
+    <section id="contact" className="relative scroll-mt-20 py-14 md:py-20">
       <div className="mx-auto max-w-6xl px-6">
         <ScrollReveal>
           <SectionHeader
@@ -81,7 +81,7 @@ export default function Contact() {
         </ScrollReveal>
 
         <ScrollReveal>
-          <div className="max-w-2xl rounded-3xl border border-[var(--hairline)] bg-white p-7 sm:p-10">
+          <div className="max-w-2xl rounded-2xl border border-[var(--hairline)] bg-[var(--card)] p-7 sm:p-10">
             {submitted ? (
               <div className="flex flex-col items-center justify-center py-14">
                 <CheckCircle2 className="h-12 w-12 text-[var(--grow)]" />
@@ -176,7 +176,7 @@ export default function Contact() {
                 <button
                   type="submit"
                   disabled={sending}
-                  className="flex w-full items-center justify-center gap-2 rounded-full bg-[var(--ink)] py-3.5 text-sm font-medium text-[var(--paper)] transition-colors hover:bg-[var(--ultra-deep)] disabled:cursor-not-allowed disabled:opacity-60"
+                  className="flex w-full items-center justify-center gap-2 rounded-full bg-[var(--ink)] py-3 text-sm font-medium text-[var(--paper)] transition-colors hover:bg-[var(--ultra-deep)] disabled:cursor-not-allowed disabled:opacity-60"
                 >
                   {sending ? (
                     <>

@@ -17,7 +17,7 @@ export default function About() {
   ];
 
   return (
-    <section id="about" className="relative scroll-mt-20 py-20 md:py-28">
+    <section id="about" className="relative scroll-mt-20 py-14 md:py-20">
       <div className="mx-auto max-w-6xl px-6">
         <ScrollReveal>
           <SectionHeader title="About" blurb="A short introduction." />
@@ -27,7 +27,7 @@ export default function About() {
           <div className="grid gap-12 lg:grid-cols-[1fr_340px] lg:gap-20">
             <div className="space-y-6">
               <p
-                className="text-2xl leading-snug text-[var(--ink)] sm:text-[1.7rem]"
+                className="text-xl leading-snug text-[var(--ink)] sm:text-2xl"
                 style={{ fontFamily: "var(--font-heading)" }}
               >
                 {SITE.about.bio}
@@ -42,7 +42,7 @@ export default function About() {
               </div>
             </div>
 
-            <dl className="h-fit divide-y divide-[var(--hairline)] rounded-2xl border border-[var(--hairline)] bg-white px-5">
+            <dl className="h-fit divide-y divide-[var(--hairline)] rounded-2xl border border-[var(--hairline)] bg-[var(--card)] px-5">
               <div className="flex items-center gap-2 py-3.5">
                 <GraduationCap size={15} className="text-[var(--ultra)]" />
                 <p className="text-xs font-medium uppercase tracking-wider text-[var(--graphite)]">

@@ -1,25 +1,27 @@
 @import "tailwindcss";
 
 @theme {
-  --color-paper: #fafaf7;
-  --color-ink: #1b1b1f;
-  --color-graphite: #6e6e76;
-  --color-hairline: rgba(27, 27, 31, 0.1);
-  --color-ultra: #2140db;
-  --color-ultra-deep: #1433b8;
-  --color-grow: #16a34a;
+  --color-paper: #f2f1eb;
+  --color-ink: #26262b;
+  --color-graphite: #6f6f78;
+  --color-hairline: rgba(38, 38, 43, 0.12);
+  --color-ultra: #2f4bc2;
+  --color-ultra-deep: #233e9e;
+  --color-grow: #15803d;
+  --color-card: #fcfbf8;
   --font-heading: "Fraunces", ui-serif, Georgia, serif;
   --font-body: "Instrument Sans", ui-sans-serif, system-ui, -apple-system, sans-serif;
   --font-mono: "IBM Plex Mono", ui-monospace, SFMono-Regular, Menlo, monospace;
 }
 
 :root {
-  --paper: #fafaf7;
-  --ink: #1b1b1f;
-  --graphite: #6e6e76;
-  --hairline: rgba(27, 27, 31, 0.1);
-  --ultra: #2140db;
-  --ultra-deep: #1433b8;
+  --paper: #f2f1eb;
+  --card: #fcfbf8;
+  --ink: #26262b;
+  --graphite: #6f6f78;
+  --hairline: rgba(38, 38, 43, 0.12);
+  --ultra: #2f4bc2;
+  --ultra-deep: #233e9e;
 }
 
 * {
@@ -41,7 +43,7 @@ body {
 }
 
 ::selection {
-  background: rgba(33, 64, 219, 0.18);
+  background: rgba(47, 75, 194, 0.15);
   color: var(--ink);
 }
 

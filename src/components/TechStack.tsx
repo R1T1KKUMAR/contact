@@ -16,7 +16,7 @@ export default function TechStack() {
   }
 
   return (
-    <section className="relative py-20 md:py-28">
+    <section className="relative py-14 md:py-20">
       <div className="mx-auto max-w-6xl px-6">
         <ScrollReveal>
           <SectionHeader title="Daily toolbox" blurb="The short list of what sees regular use." />

@@ -42,9 +42,9 @@ function DetailModal({
         role="dialog"
         aria-modal="true"
         aria-label={`${project.title} case study`}
-        className="max-h-[85vh] w-full max-w-2xl overflow-y-auto rounded-3xl bg-[var(--paper)] shadow-2xl shadow-black/20 ring-1 ring-black/5"
+        className="max-h-[85vh] w-full max-w-2xl overflow-y-auto rounded-2xl bg-[var(--card)] shadow-xl shadow-black/10 ring-1 ring-black/5"
       >
-        <div className="sticky top-0 flex items-center justify-between border-b border-[var(--hairline)] bg-[var(--paper)] px-6 py-4">
+        <div className="sticky top-0 flex items-center justify-between border-b border-[var(--hairline)] bg-[var(--card)] px-6 py-4">
           <p className="text-xs font-medium uppercase tracking-wider text-[var(--graphite)]">
             Case study
           </p>
@@ -81,7 +81,7 @@ function DetailModal({
           {project.metrics.length > 0 && (
             <div className="mt-8 grid gap-px overflow-hidden rounded-2xl bg-[var(--hairline)] sm:grid-cols-3">
               {project.metrics.map((metric) => (
-                <p key={metric} className="bg-white px-5 py-4 text-sm font-medium text-[var(--ink)]">
+                <p key={metric} className="bg-[var(--card)] px-5 py-4 text-sm font-medium text-[var(--ink)]">
                   {metric}
                 </p>
               ))}
@@ -98,7 +98,7 @@ export default function Projects() {
   const [detail, setDetail] = useState<Project | null>(null);
 
   return (
-    <section id="projects" className="relative scroll-mt-20 py-20 md:py-28">
+    <section id="projects" className="relative scroll-mt-20 py-14 md:py-20">
       <div className="mx-auto max-w-6xl px-6">
         <ScrollReveal>
           <SectionHeader
@@ -115,13 +115,13 @@ export default function Projects() {
                   i % 2 === 1 ? "lg:[&>figure]:order-2" : ""
                 }`}
               >
-                <figure className="overflow-hidden rounded-3xl ring-1 ring-black/5">
+                <figure className="overflow-hidden rounded-2xl ring-1 ring-black/5">
                   {/* eslint-disable-next-line @next/next/no-img-element */}
                   <img
                     src={project.image}
                     alt={project.title}
                     loading="lazy"
-                    className="aspect-[3/2] w-full object-cover transition-transform duration-700 hover:scale-[1.02]"
+                    className="aspect-[3/2] w-full object-cover transition-transform duration-700 hover:scale-[1.015]"
                   />
                 </figure>
 

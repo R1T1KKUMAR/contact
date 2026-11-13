@@ -8,7 +8,7 @@ export default function Skills() {
   const SITE = useSite();
 
   return (
-    <section id="skills" className="relative scroll-mt-20 py-20 md:py-28">
+    <section id="skills" className="relative scroll-mt-20 py-14 md:py-20">
       <div className="mx-auto max-w-6xl px-6">
         <ScrollReveal>
           <SectionHeader title="What I work with" blurb="Tools and technologies, grouped by craft." />

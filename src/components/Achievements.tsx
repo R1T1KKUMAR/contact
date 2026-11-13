@@ -18,7 +18,7 @@ export default function Achievements() {
   const SITE = useSite();
 
   return (
-    <section id="achievements" className="relative scroll-mt-20 py-20 md:py-28">
+    <section id="achievements" className="relative scroll-mt-20 py-14 md:py-20">
       <div className="mx-auto max-w-6xl px-6">
         <ScrollReveal>
           <SectionHeader title="Highlights" blurb="Moments worth noting." />
