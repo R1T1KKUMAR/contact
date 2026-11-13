@@ -6,6 +6,7 @@ export const SITE = {
   email: "ritikkumar12bicbly@gmail.com",
   phone: "+919808470386",
   location: "Bareilly, Uttar Pradesh, India",
+  profileImage: "/images/Profile.jpeg",
   resumeUrl: "",
   github: "https://github.com/R1T1KKUMAR",
   linkedin: "https://www.linkedin.com/in/ritik-kumar-ba7931293",

@@ -15,7 +15,7 @@ import {
   Loader2,
   RotateCcw,
 } from "lucide-react";
-import { saveSiteAction } from "./actions";
+import { saveSiteAction, uploadImageAction } from "./actions";
 import type { SiteData } from "@/config/site";
 
 type Json = string | number | boolean | null | Json[] | { [key: string]: Json };
@@ -68,6 +68,14 @@ function isLongText(key: string, value: string): boolean {
   return LONG_KEYS.has(key) || value.length > 90;
 }
 
+function isImageField(key: string, value: Json): boolean {
+  if (typeof value !== "string") return false;
+  return (
+    /image|photo|avatar/i.test(key) ||
+    /\.(png|jpe?g|webp|svg|avif|gif)(\?|$)/i.test(value)
+  );
+}
+
 /** Immutable update at a path. */
 function setPath(obj: Json, path: Path, value: Json): Json {
   if (path.length === 0) return value;
@@ -94,6 +102,90 @@ function emptyValueFor(template: Json): Json {
     return out;
   }
   return "";
+}
+
+function ImageField({
+  fieldKey,
+  path,
+  value,
+  onChange,
+}: {
+  fieldKey: string;
+  path: Path;
+  value: string;
+  onChange: (path: Path, value: Json) => void;
+}) {
+  const [uploading, setUploading] = useState(false);
+  const [error, setError] = useState("");
+  const inputId = `img-${path.join("-")}`;
+
+  const handleFile = async (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (!file) return;
+    setUploading(true);
+    setError("");
+    const fd = new FormData();
+    fd.append("file", file);
+    try {
+      const res = await uploadImageAction(fd);
+      if (res.ok && res.url) {
+        onChange(path, res.url);
+      } else {
+        setError(res.error || "Upload failed.");
+      }
+    } catch {
+      setError("Upload failed.");
+    } finally {
+      setUploading(false);
+      e.target.value = "";
+    }
+  };
+
+  return (
+    <div className="space-y-2">
+      <label className="text-xs font-mono tracking-wider text-[#94A3B8]">{label(fieldKey)}</label>
+      <div className="flex items-start gap-3">
+        {value ? (
+          // eslint-disable-next-line @next/next/no-img-element
+          <img
+            src={value}
+            alt={label(fieldKey)}
+            className="w-16 h-16 rounded-lg object-cover border border-[rgba(255,255,255,0.1)] flex-shrink-0 bg-[#09090B]"
+          />
+        ) : (
+          <div className="w-16 h-16 rounded-lg border border-dashed border-[rgba(255,255,255,0.15)] flex-shrink-0 flex items-center justify-center text-[#94A3B8]/40 text-xs">
+            No img
+          </div>
+        )}
+        <div className="flex-1 space-y-2 min-w-0">
+          <input
+            type="text"
+            value={value}
+            onChange={(e) => onChange(path, e.target.value)}
+            placeholder="/images/photo.jpg or https://..."
+            className={inputClass}
+          />
+          <div className="flex items-center gap-2">
+            <label
+              htmlFor={inputId}
+              className="flex items-center gap-1.5 px-3 py-1.5 text-xs text-[#6366F1] border border-[rgba(99,102,241,0.3)] rounded-lg hover:bg-[#6366F1]/10 cursor-pointer transition-all"
+            >
+              {uploading ? <Loader2 size={12} className="animate-spin" /> : <Plus size={12} />}
+              {uploading ? "Uploading..." : "Upload image"}
+            </label>
+            <input
+              id={inputId}
+              type="file"
+              accept="image/*"
+              className="hidden"
+              onChange={handleFile}
+            />
+          </div>
+        </div>
+      </div>
+      {error && <p className="text-xs text-[#EF4444]">{error}</p>}
+    </div>
+  );
 }
 
 function ValueEditor({
@@ -137,6 +229,11 @@ function ValueEditor({
 
   if (typeof value === "string" || value === null) {
     const text = value ?? "";
+    if (isImageField(fieldKey, text)) {
+      return (
+        <ImageField fieldKey={fieldKey} path={path} value={text} onChange={onChange} />
+      );
+    }
     if (isLongText(fieldKey, text)) {
       return (
         <div className="space-y-1">

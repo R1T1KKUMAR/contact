@@ -28,6 +28,8 @@ function getSupabase(): SupabaseClient | null {
   return client;
 }
 
+export { getSupabase };
+
 /** Merges saved content over the defaults so new fields added to site.ts always have values. */
 function withDefaults(saved: Partial<SiteData> | null | undefined): SiteData {
   if (!saved || typeof saved !== "object") return SITE;

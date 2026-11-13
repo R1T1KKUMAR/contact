@@ -168,7 +168,7 @@ export default function Hero() {
               <div className="relative w-full rounded-3xl border border-[rgba(255,255,255,0.08)] bg-gradient-to-br from-[#18181B] to-[#111827] overflow-hidden">
                 <div className="aspect-[4/5] w-full overflow-hidden bg-gradient-to-br from-[#6366F1]/10 to-transparent">
                   <img
-                    src="/images/Profile.jpeg"
+                    src={SITE.profileImage || "/images/Profile.jpeg"}
                     alt={SITE.name}
                     className="w-full h-full object-cover"
                     onError={(e) => {

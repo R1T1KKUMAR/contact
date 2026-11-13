@@ -4,7 +4,11 @@ import { cookies } from "next/headers";
 import { createHash } from "node:crypto";
 import { redirect } from "next/navigation";
 import { revalidateTag } from "next/cache";
-import { saveSiteContent, supabaseConfigured } from "@/lib/site-data";
+import {
+  saveSiteContent,
+  supabaseConfigured,
+  getSupabase,
+} from "@/lib/site-data";
 import type { SiteData } from "@/config/site";
 
 const SESSION_COOKIE = "admin_session";
@@ -54,6 +58,61 @@ export async function logoutAction(): Promise<void> {
   const store = await cookies();
   store.delete(SESSION_COOKIE);
   redirect("/admin");
+}
+
+const ASSETS_BUCKET = "site-assets";
+const MAX_IMAGE_BYTES = 5 * 1024 * 1024; // 5MB
+
+/** Uploads an image to Supabase Storage and returns its public URL. */
+export async function uploadImageAction(
+  formData: FormData
+): Promise<{ ok: boolean; url?: string; error?: string }> {
+  if (!(await isAuthed())) {
+    return { ok: false, error: "Not authorized. Please log in again." };
+  }
+  if (!supabaseConfigured) {
+    return { ok: false, error: "Supabase is not configured." };
+  }
+
+  const supabase = getSupabase();
+  if (!supabase) return { ok: false, error: "Supabase is not configured." };
+
+  const file = formData.get("file");
+  if (!(file instanceof File) || file.size === 0) {
+    return { ok: false, error: "No file provided." };
+  }
+  if (!file.type.startsWith("image/")) {
+    return { ok: false, error: "Only image files are allowed." };
+  }
+  if (file.size > MAX_IMAGE_BYTES) {
+    return { ok: false, error: "Image must be smaller than 5MB." };
+  }
+
+  try {
+    // Ensure a public bucket exists (first upload creates it).
+    const { data: buckets } = await supabase.storage.listBuckets();
+    if (!buckets?.some((b) => b.name === ASSETS_BUCKET)) {
+      const { error: createError } = await supabase.storage.createBucket(ASSETS_BUCKET, {
+        public: true,
+      });
+      if (createError && !createError.message.includes("already exists")) {
+        return { ok: false, error: createError.message };
+      }
+    }
+
+    const safeName = file.name.replace(/[^a-zA-Z0-9._-]/g, "-");
+    const path = `${Date.now()}-${safeName}`;
+    const { error } = await supabase.storage
+      .from(ASSETS_BUCKET)
+      .upload(path, file, { contentType: file.type });
+
+    if (error) return { ok: false, error: error.message };
+
+    const { data } = supabase.storage.from(ASSETS_BUCKET).getPublicUrl(path);
+    return { ok: true, url: data.publicUrl };
+  } catch (err) {
+    return { ok: false, error: err instanceof Error ? err.message : "Upload failed." };
+  }
 }
 
 export async function saveSiteAction(
