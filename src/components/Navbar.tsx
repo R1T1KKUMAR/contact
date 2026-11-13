@@ -1,114 +1,120 @@
 "use client";
 
-import { useState, useEffect } from "react";
-import { motion, AnimatePresence } from "framer-motion";
-import { Menu, X, FileText } from "lucide-react";
-import { cn } from "@/lib/utils";
+import { useEffect, useState } from "react";
+import { usePathname } from "next/navigation";
 import { useSite } from "@/components/site-context";
 
-const NAV_ITEMS = [
-  { label: "About", href: "#about" },
-  { label: "Projects", href: "#projects" },
-  { label: "Experience", href: "#experience" },
-  { label: "Contact", href: "#contact" },
+const SHEETS: { no: string; label: string; href: string }[] = [
+  { no: "01", label: "Cover", href: "#top" },
+  { no: "02", label: "About", href: "#about" },
+  { no: "03", label: "Parts list", href: "#skills" },
+  { no: "04", label: "Assembly", href: "#projects" },
+  { no: "05", label: "Revisions", href: "#experience" },
+  { no: "06", label: "Materials", href: "#stack" },
+  { no: "07", label: "Inspection", href: "#achievements" },
+  { no: "08", label: "Activity", href: "#github" },
+  { no: "09", label: "Request build", href: "#contact" },
 ];
 
 export default function Navbar() {
   const SITE = useSite();
-  const [scrolled, setScrolled] = useState(false);
-  const [mobileOpen, setMobileOpen] = useState(false);
+  const pathname = usePathname();
+  const [active, setActive] = useState("#top");
 
   useEffect(() => {
-    const onScroll = () => setScrolled(window.scrollY > 50);
-    window.addEventListener("scroll", onScroll, { passive: true });
-    return () => window.removeEventListener("scroll", onScroll);
+    const ids = SHEETS.map((s) => s.href.slice(1));
+    const observer = new IntersectionObserver(
+      (entries) => {
+        for (const entry of entries) {
+          if (entry.isIntersecting) setActive(`#${entry.target.id}`);
+        }
+      },
+      { rootMargin: "-30% 0px -55% 0px" }
+    );
+    for (const id of ids) {
+      const el = document.getElementById(id);
+      if (el) observer.observe(el);
+    }
+    return () => observer.disconnect();
   }, []);
 
-  return (
-    <motion.header
-      initial={{ y: -100 }}
-      animate={{ y: 0 }}
-      transition={{ duration: 0.6, ease: [0.25, 0.1, 0.25, 1] }}
-      className={cn(
-        "fixed top-0 left-0 right-0 z-50 transition-all duration-500",
-        scrolled
-          ? "bg-[#09090B]/80 backdrop-blur-xl border-b border-[rgba(255,255,255,0.06)]"
-          : "bg-transparent"
-      )}
+  if (pathname?.startsWith("/admin")) return null;
+
+  const brand = (
+    <a href="#top" className="font-mono text-sm font-semibold tracking-tight text-[var(--bp-white)]">
+      {SITE.name.split(" ")[0].toUpperCase()}
+      <span className="text-[var(--bp-cyan)]">.</span>
+    </a>
+  );
+
+  // Desktop: fixed sheet-index rail
+  const rail = (
+    <nav
+      aria-label="Sheet index"
+      className="fixed left-0 top-0 bottom-0 z-50 hidden w-44 flex-col justify-between border-r border-[var(--bp-line-soft)] bg-[rgba(10,32,56,0.7)] px-5 py-6 backdrop-blur-sm lg:flex"
     >
-      <nav className="mx-auto max-w-7xl px-6 h-16 flex items-center justify-between">
-        <a
-          href="#"
-          className="text-lg font-semibold tracking-tight text-[#FAFAFA]"
-        >
-          {SITE.name.split(" ")[0]}
-          <span className="text-[#6366F1]">.</span>
-        </a>
+      <div>
+        {brand}
+        <ul className="mt-10 space-y-1">
+          {SHEETS.map((sheet) => {
+            const isActive = active === sheet.href;
+            return (
+              <li key={sheet.href}>
+                <a
+                  href={sheet.href}
+                  className={`group flex items-baseline gap-2 border-l-2 py-1.5 pl-3 text-[11px] font-mono transition-colors ${
+                    isActive
+                      ? "border-[var(--bp-cyan)] text-[var(--bp-white)]"
+                      : "border-transparent text-[var(--bp-graphite)] hover:text-[var(--bp-white)]"
+                  }`}
+                >
+                  <span className={isActive ? "text-[var(--bp-cyan)]" : "text-[var(--bp-graphite)] opacity-60"}>
+                    {sheet.no}
+                  </span>
+                  <span>{sheet.label}</span>
+                </a>
+              </li>
+            );
+          })}
+        </ul>
+      </div>
+      <div className="space-y-1 font-mono text-[10px] leading-relaxed text-[var(--bp-graphite)]">
+        <p className="flex items-center gap-1.5">
+          <span className="inline-block h-1.5 w-1.5 rounded-full bg-[var(--bp-cyan)]" />
+          Open to work
+        </p>
+        <p>{SITE.location}</p>
+      </div>
+    </nav>
+  );
 
-        <div className="hidden md:flex items-center gap-8">
-          {NAV_ITEMS.map((item) => (
-            <a
-              key={item.href}
-              href={item.href}
-              className="relative text-sm text-[#94A3B8] hover:text-[#FAFAFA] transition-colors duration-300 group"
-            >
-              {item.label}
-              <span className="absolute -bottom-1 left-0 w-0 h-[2px] bg-[#6366F1] transition-all duration-300 group-hover:w-full" />
-            </a>
-          ))}
-          {SITE.resumeUrl && (
-            <a
-              href={SITE.resumeUrl}
-              className="flex items-center gap-2 px-4 py-2 text-sm font-medium text-[#FAFAFA] bg-[#6366F1] rounded-lg hover:bg-[#5354E0] transition-all duration-300 hover:scale-105"
-            >
-              <FileText size={14} />
-              Resume
-            </a>
-          )}
-        </div>
-
-        <button
-          onClick={() => setMobileOpen(!mobileOpen)}
-          className="md:hidden text-[#94A3B8] hover:text-[#FAFAFA] transition-colors"
-          aria-label="Toggle menu"
-        >
-          {mobileOpen ? <X size={20} /> : <Menu size={20} />}
-        </button>
-      </nav>
-
-      <AnimatePresence>
-        {mobileOpen && (
-          <motion.div
-            initial={{ opacity: 0, height: 0 }}
-            animate={{ opacity: 1, height: "auto" }}
-            exit={{ opacity: 0, height: 0 }}
-            transition={{ duration: 0.3, ease: [0.25, 0.1, 0.25, 1] }}
-            className="md:hidden border-t border-[rgba(255,255,255,0.06)] bg-[#09090B]/95 backdrop-blur-xl"
+  // Mobile: compact top bar with the same index, scrollable
+  const topbar = (
+    <nav
+      aria-label="Sheet index"
+      className="fixed inset-x-0 top-0 z-50 flex h-14 items-center justify-between gap-4 border-b border-[var(--bp-line-soft)] bg-[rgba(10,32,56,0.85)] px-4 backdrop-blur-sm lg:hidden"
+    >
+      {brand}
+      <div className="flex gap-4 overflow-x-auto font-mono text-[11px] text-[var(--bp-graphite)] [scrollbar-width:none]">
+        {SHEETS.map((sheet) => (
+          <a
+            key={sheet.href}
+            href={sheet.href}
+            className={`whitespace-nowrap transition-colors ${
+              active === sheet.href ? "text-[var(--bp-cyan)]" : "hover:text-[var(--bp-white)]"
+            }`}
           >
-            <div className="px-6 py-4 flex flex-col gap-4">
-              {NAV_ITEMS.map((item) => (
-                <a
-                  key={item.href}
-                  href={item.href}
-                  onClick={() => setMobileOpen(false)}
-                  className="text-sm text-[#94A3B8] hover:text-[#FAFAFA] transition-colors py-2"
-                >
-                  {item.label}
-                </a>
-              ))}
-              {SITE.resumeUrl && (
-                <a
-                  href={SITE.resumeUrl}
-                  className="flex items-center justify-center gap-2 px-4 py-2.5 text-sm font-medium text-[#FAFAFA] bg-[#6366F1] rounded-lg"
-                >
-                  <FileText size={14} />
-                  Resume
-                </a>
-              )}
-            </div>
-          </motion.div>
-        )}
-      </AnimatePresence>
-    </motion.header>
+            {sheet.no}
+          </a>
+        ))}
+      </div>
+    </nav>
+  );
+
+  return (
+    <>
+      {rail}
+      {topbar}
+    </>
   );
 }

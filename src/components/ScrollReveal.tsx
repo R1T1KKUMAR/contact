@@ -1,7 +1,7 @@
 "use client";
 
 import { useRef } from "react";
-import { motion, useInView } from "framer-motion";
+import { motion, useInView, useReducedMotion } from "framer-motion";
 
 interface ScrollRevealProps {
   children: React.ReactNode;
@@ -10,39 +10,29 @@ interface ScrollRevealProps {
   direction?: "up" | "down" | "left" | "right";
 }
 
+/**
+ * Quiet opacity-only reveal. Structure should never depend on movement;
+ * content simply arrives. Respects prefers-reduced-motion.
+ */
 export default function ScrollReveal({
   children,
   className = "",
   delay = 0,
-  direction = "up",
 }: ScrollRevealProps) {
   const ref = useRef<HTMLDivElement>(null);
-  const isInView = useInView(ref, { once: true, margin: "-100px" });
+  const isInView = useInView(ref, { once: true, margin: "-60px" });
+  const reduceMotion = useReducedMotion();
 
-  const directionVariants = {
-    up: { y: 60 },
-    down: { y: -60 },
-    left: { x: 60 },
-    right: { x: -60 },
-  };
+  if (reduceMotion) {
+    return <div ref={ref} className={className}>{children}</div>;
+  }
 
   return (
     <motion.div
       ref={ref}
-      initial={{
-        opacity: 0,
-        ...directionVariants[direction],
-      }}
-      animate={
-        isInView
-          ? { opacity: 1, x: 0, y: 0 }
-          : { opacity: 0, ...directionVariants[direction] }
-      }
-      transition={{
-        duration: 0.7,
-        delay,
-        ease: [0.25, 0.1, 0.25, 1],
-      }}
+      initial={{ opacity: 0 }}
+      animate={isInView ? { opacity: 1 } : { opacity: 0 }}
+      transition={{ duration: 0.5, delay, ease: "easeOut" }}
       className={className}
     >
       {children}

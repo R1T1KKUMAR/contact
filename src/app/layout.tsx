@@ -1,26 +1,21 @@
 import type { Metadata } from "next";
-import { Sora, Inter, JetBrains_Mono } from "next/font/google";
+import { IBM_Plex_Sans, IBM_Plex_Mono } from "next/font/google";
 import "./globals.css";
 import Navbar from "@/components/Navbar";
-import Particles from "@/components/Particles";
 import Footer from "@/components/Footer";
 import { SiteProvider } from "@/components/site-context";
 import { getSiteContent } from "@/lib/site-data";
 
-const sora = Sora({
+const plexSans = IBM_Plex_Sans({
   subsets: ["latin"],
+  weight: ["400", "500", "600", "700"],
   variable: "--font-heading",
   display: "swap",
 });
 
-const inter = Inter({
+const plexMono = IBM_Plex_Mono({
   subsets: ["latin"],
-  variable: "--font-body",
-  display: "swap",
-});
-
-const jetbrainsMono = JetBrains_Mono({
-  subsets: ["latin"],
+  weight: ["400", "500", "600"],
   variable: "--font-mono",
   display: "swap",
 });
@@ -67,16 +62,14 @@ export default async function RootLayout({
   const site = await getSiteContent();
 
   return (
-    <html
-      lang="en"
-      className={`${sora.variable} ${inter.variable} ${jetbrainsMono.variable}`}
-    >
+    <html lang="en" className={`${plexSans.variable} ${plexMono.variable}`}>
       <body className="antialiased">
         <SiteProvider site={site}>
           <Navbar />
-          <Particles />
-          <main>{children}</main>
-          <Footer />
+          <main className="lg:pl-44">{children}</main>
+          <div className="lg:pl-44">
+            <Footer />
+          </div>
         </SiteProvider>
       </body>
     </html>
