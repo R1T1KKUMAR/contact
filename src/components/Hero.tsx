@@ -4,9 +4,10 @@ import { useEffect, useRef, useState } from "react";
 import { motion } from "framer-motion";
 import { ArrowDown, Mail, FileText } from "lucide-react";
 import { GithubIcon, LinkedinIcon } from "./Icons";
-import { SITE } from "@/config/site";
+import { useSite } from "@/components/site-context";
 
 export default function Hero() {
+  const SITE = useSite();
   const [mousePos, setMousePos] = useState({ x: 0, y: 0 });
   const heroRef = useRef<HTMLDivElement>(null);
 
@@ -106,13 +107,15 @@ export default function Hero() {
                   className="absolute inset-0 bg-gradient-to-r from-[#5354E0] to-[#7C3AED] opacity-0 group-hover:opacity-100 transition-opacity duration-300"
                 />
               </a>
-              <a
-                href={SITE.resumeUrl || "#"}
-                className="group flex items-center gap-2 px-6 py-3 border border-[rgba(255,255,255,0.1)] text-[#FAFAFA] font-medium rounded-xl hover:bg-[rgba(255,255,255,0.05)] transition-all duration-300 hover:scale-105"
-              >
-                <FileText size={16} />
-                Download Resume
-              </a>
+              {SITE.resumeUrl && (
+                <a
+                  href={SITE.resumeUrl}
+                  className="group flex items-center gap-2 px-6 py-3 border border-[rgba(255,255,255,0.1)] text-[#FAFAFA] font-medium rounded-xl hover:bg-[rgba(255,255,255,0.05)] transition-all duration-300 hover:scale-105"
+                >
+                  <FileText size={16} />
+                  Download Resume
+                </a>
+              )}
             </motion.div>
 
             <motion.div

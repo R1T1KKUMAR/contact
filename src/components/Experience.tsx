@@ -2,9 +2,10 @@
 
 import { motion } from "framer-motion";
 import ScrollReveal from "./ScrollReveal";
-import { SITE } from "@/config/site";
+import { useSite } from "@/components/site-context";
 
 export default function Experience() {
+  const SITE = useSite();
   return (
     <section id="experience" className="relative py-16 md:py-24 lg:py-32">
       <div className="mx-auto max-w-7xl px-6">

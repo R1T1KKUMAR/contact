@@ -2,9 +2,10 @@
 
 import { Mail, Heart } from "lucide-react";
 import { GithubIcon, LinkedinIcon } from "./Icons";
-import { SITE } from "@/config/site";
+import { useSite } from "@/components/site-context";
 
 export default function Footer() {
+  const SITE = useSite();
   return (
     <footer className="border-t border-[rgba(255,255,255,0.06)]">
       <div className="mx-auto max-w-7xl px-6 py-8">

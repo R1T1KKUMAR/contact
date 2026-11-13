@@ -3,7 +3,7 @@
 import { motion } from "framer-motion";
 import { Award, GitFork, Trophy, GitCommit, Star, Zap } from "lucide-react";
 import ScrollReveal from "./ScrollReveal";
-import { SITE } from "@/config/site";
+import { useSite } from "@/components/site-context";
 
 const iconMap: Record<string, React.ElementType> = {
   Award,
@@ -15,6 +15,7 @@ const iconMap: Record<string, React.ElementType> = {
 };
 
 export default function Achievements() {
+  const SITE = useSite();
   return (
     <section className="relative py-16 md:py-24 lg:py-32">
       <div className="mx-auto max-w-7xl px-6">

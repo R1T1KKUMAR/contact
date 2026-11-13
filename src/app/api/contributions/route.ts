@@ -1,8 +1,10 @@
 import { NextResponse } from "next/server";
+import { SITE } from "@/config/site";
 
 export async function GET() {
   try {
-    const res = await fetch("https://github.com/users/R1T1KKUMAR/contributions", {
+    const username = SITE.github.split("/").pop() || "R1T1KKUMAR";
+    const res = await fetch(`https://github.com/users/${username}/contributions`, {
       next: { revalidate: 3600 },
     });
     const html = await res.text();

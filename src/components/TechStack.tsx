@@ -2,7 +2,7 @@
 
 import { motion } from "framer-motion";
 import ScrollReveal from "./ScrollReveal";
-import { SITE } from "@/config/site";
+import { useSite } from "@/components/site-context";
 
 const categoryColors: Record<string, string> = {
   Frontend: "#6366F1",
@@ -15,6 +15,7 @@ const categoryColors: Record<string, string> = {
 };
 
 export default function TechStack() {
+  const SITE = useSite();
   return (
     <section className="relative py-16 md:py-24 lg:py-32">
       <div className="mx-auto max-w-7xl px-6">

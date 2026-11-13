@@ -4,7 +4,7 @@ import { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { Menu, X, FileText } from "lucide-react";
 import { cn } from "@/lib/utils";
-import { SITE } from "@/config/site";
+import { useSite } from "@/components/site-context";
 
 const NAV_ITEMS = [
   { label: "About", href: "#about" },
@@ -14,6 +14,7 @@ const NAV_ITEMS = [
 ];
 
 export default function Navbar() {
+  const SITE = useSite();
   const [scrolled, setScrolled] = useState(false);
   const [mobileOpen, setMobileOpen] = useState(false);
 
@@ -55,13 +56,15 @@ export default function Navbar() {
               <span className="absolute -bottom-1 left-0 w-0 h-[2px] bg-[#6366F1] transition-all duration-300 group-hover:w-full" />
             </a>
           ))}
-          <a
-            href={SITE.resumeUrl || "#"}
-            className="flex items-center gap-2 px-4 py-2 text-sm font-medium text-[#FAFAFA] bg-[#6366F1] rounded-lg hover:bg-[#5354E0] transition-all duration-300 hover:scale-105"
-          >
-            <FileText size={14} />
-            Resume
-          </a>
+          {SITE.resumeUrl && (
+            <a
+              href={SITE.resumeUrl}
+              className="flex items-center gap-2 px-4 py-2 text-sm font-medium text-[#FAFAFA] bg-[#6366F1] rounded-lg hover:bg-[#5354E0] transition-all duration-300 hover:scale-105"
+            >
+              <FileText size={14} />
+              Resume
+            </a>
+          )}
         </div>
 
         <button
@@ -93,13 +96,15 @@ export default function Navbar() {
                   {item.label}
                 </a>
               ))}
-              <a
-                href={SITE.resumeUrl || "#"}
-                className="flex items-center justify-center gap-2 px-4 py-2.5 text-sm font-medium text-[#FAFAFA] bg-[#6366F1] rounded-lg"
-              >
-                <FileText size={14} />
-                Resume
-              </a>
+              {SITE.resumeUrl && (
+                <a
+                  href={SITE.resumeUrl}
+                  className="flex items-center justify-center gap-2 px-4 py-2.5 text-sm font-medium text-[#FAFAFA] bg-[#6366F1] rounded-lg"
+                >
+                  <FileText size={14} />
+                  Resume
+                </a>
+              )}
             </div>
           </motion.div>
         )}

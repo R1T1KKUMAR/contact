@@ -5,10 +5,13 @@ import { motion, AnimatePresence } from "framer-motion";
 import { X, ExternalLink, BookOpen, BarChart3, Cpu, Trophy } from "lucide-react";
 import { GithubIcon } from "./Icons";
 import ScrollReveal from "./ScrollReveal";
-import { SITE } from "@/config/site";
+import { useSite } from "@/components/site-context";
+import type { SiteData } from "@/config/site";
+
+type Project = SiteData["projects"][0];
 
 interface ProjectModalProps {
-  project: (typeof SITE.projects)[0];
+  project: Project;
   onClose: () => void;
 }
 
@@ -101,12 +104,14 @@ function ProjectModal({ project, onClose }: ProjectModalProps) {
           </div>
 
           <div className="flex gap-3 pt-2">
-            <a
-              href={project.liveUrl}
-              className="flex items-center gap-2 px-4 py-2 text-sm font-medium text-[#FAFAFA] bg-[#6366F1] rounded-lg hover:bg-[#5354E0] transition-all"
-            >
-              <ExternalLink size={14} /> Live Demo
-            </a>
+            {project.liveUrl && project.liveUrl !== "#" && (
+              <a
+                href={project.liveUrl}
+                className="flex items-center gap-2 px-4 py-2 text-sm font-medium text-[#FAFAFA] bg-[#6366F1] rounded-lg hover:bg-[#5354E0] transition-all"
+              >
+                <ExternalLink size={14} /> Live Demo
+              </a>
+            )}
             <a
               href={project.githubUrl}
               className="flex items-center gap-2 px-4 py-2 text-sm font-medium text-[#94A3B8] border border-[rgba(255,255,255,0.1)] rounded-lg hover:text-[#FAFAFA] hover:bg-[rgba(255,255,255,0.05)] transition-all"
@@ -121,7 +126,8 @@ function ProjectModal({ project, onClose }: ProjectModalProps) {
 }
 
 export default function Projects() {
-  const [selectedProject, setSelectedProject] = useState<typeof SITE.projects[0] | null>(null);
+  const SITE = useSite();
+  const [selectedProject, setSelectedProject] = useState<Project | null>(null);
 
   return (
     <section id="projects" className="relative py-16 md:py-24 lg:py-32">
@@ -195,12 +201,14 @@ export default function Projects() {
                     >
                       <BookOpen size={14} /> Case Study
                     </button>
-                    <a
-                      href={project.liveUrl}
-                      className="flex items-center gap-2 px-4 py-2 text-sm font-medium text-[#94A3B8] border border-[rgba(255,255,255,0.1)] rounded-lg hover:text-[#FAFAFA] hover:bg-[rgba(255,255,255,0.05)] transition-all duration-300 hover:scale-105"
-                    >
-                      <ExternalLink size={14} /> Live Demo
-                    </a>
+                    {project.liveUrl && project.liveUrl !== "#" && (
+                      <a
+                        href={project.liveUrl}
+                        className="flex items-center gap-2 px-4 py-2 text-sm font-medium text-[#94A3B8] border border-[rgba(255,255,255,0.1)] rounded-lg hover:text-[#FAFAFA] hover:bg-[rgba(255,255,255,0.05)] transition-all duration-300 hover:scale-105"
+                      >
+                        <ExternalLink size={14} /> Live Demo
+                      </a>
+                    )}
                     <a
                       href={project.githubUrl}
                       target="_blank"

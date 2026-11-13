@@ -5,22 +5,13 @@ import { motion } from "framer-motion";
 import { Star, GitFork, ExternalLink } from "lucide-react";
 import { GithubIcon } from "./Icons";
 import ScrollReveal from "./ScrollReveal";
-import { SITE } from "@/config/site";
+import { useSite } from "@/components/site-context";
 
 type ContributionDay = {
   date: string;
   count: number;
   level: number;
 };
-
-const repos = [
-  { name: "blog-writer-ai", stars: 0, forks: 0, language: "TypeScript", description: "AI-powered blog writing tool" },
-  { name: "jolt", stars: 0, forks: 0, language: "TypeScript", description: "Full-stack application" },
-  { name: "MacQuiz", stars: 0, forks: 3, language: "JavaScript", description: "macOS quiz application" },
-  { name: "voice_agent", stars: 0, forks: 0, language: "Python", description: "Voice AI agent" },
-  { name: "NIDS", stars: 0, forks: 0, language: "Python", description: "Network Intrusion Detection System" },
-  { name: "LMS", stars: 0, forks: 0, language: "HTML", description: "Learning Management System for Harrow School" },
-];
 
 const levels = ["#1C1C1C", "#0E4429", "#006D32", "#26A641", "#39D353"];
 
@@ -50,6 +41,7 @@ function groupByWeek(contributions: ContributionDay[]) {
 }
 
 export default function GitHubActivity() {
+  const SITE = useSite();
   const [contributions, setContributions] = useState<ContributionDay[]>([]);
   const [totalContributions, setTotalContributions] = useState(0);
   const [loading, setLoading] = useState(true);
@@ -132,7 +124,7 @@ export default function GitHubActivity() {
         </ScrollReveal>
 
         <div className="space-y-3">
-          {repos.map((repo, i) => (
+          {SITE.repos.map((repo, i) => (
             <ScrollReveal key={repo.name} delay={i * 0.08}>
               <motion.a
                 href={`${SITE.github}/${repo.name}`}

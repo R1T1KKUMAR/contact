@@ -4,6 +4,8 @@ import "./globals.css";
 import Navbar from "@/components/Navbar";
 import Particles from "@/components/Particles";
 import Footer from "@/components/Footer";
+import { SiteProvider } from "@/components/site-context";
+import { getSiteContent } from "@/lib/site-data";
 
 const sora = Sora({
   subsets: ["latin"],
@@ -24,32 +26,58 @@ const jetbrainsMono = JetBrains_Mono({
 });
 
 export const metadata: Metadata = {
+  metadataBase: new URL("https://www.iamritik.me"),
   title: "Ritik Kumar | Software Engineer & AI Developer",
   description:
     "Building intelligent applications with modern web technologies, AI, and cloud infrastructure.",
+  alternates: {
+    canonical: "/",
+  },
+  icons: {
+    icon: [
+      { url: "/favicon.ico", sizes: "48x48" },
+      { url: "/favicon.svg", type: "image/svg+xml" },
+      { url: "/favicon-32x32.png", sizes: "32x32", type: "image/png" },
+      { url: "/favicon-16x16.png", sizes: "16x16", type: "image/png" },
+    ],
+    apple: "/apple-touch-icon.png",
+  },
+  manifest: "/site.webmanifest",
   openGraph: {
     title: "Ritik Kumar | Software Engineer & AI Developer",
     description:
       "Building intelligent applications with modern web technologies, AI, and cloud infrastructure.",
     type: "website",
+    url: "/",
+    siteName: "Ritik Kumar",
+  },
+  twitter: {
+    card: "summary",
+    title: "Ritik Kumar | Software Engineer & AI Developer",
+    description:
+      "Building intelligent applications with modern web technologies, AI, and cloud infrastructure.",
   },
 };
 
-export default function RootLayout({
+export default async function RootLayout({
   children,
 }: {
   children: React.ReactNode;
 }) {
+  const site = await getSiteContent();
+
   return (
     <html
       lang="en"
       className={`${sora.variable} ${inter.variable} ${jetbrainsMono.variable}`}
     >
       <body className="antialiased">
-        <Navbar />
-        <Particles />
-        <main>{children}</main>
-        <Footer />
+        <SiteProvider site={site}>
+          <Navbar />
+          <Particles />
+          <main>{children}</main>
+          <Footer />
+        </SiteProvider>
       </body>
     </html>
   );

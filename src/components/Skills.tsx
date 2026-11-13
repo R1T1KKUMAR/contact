@@ -13,7 +13,7 @@ import {
   ChevronRight,
 } from "lucide-react";
 import ScrollReveal from "./ScrollReveal";
-import { SITE } from "@/config/site";
+import { useSite } from "@/components/site-context";
 
 const iconMap: Record<string, React.ElementType> = {
   Code2,
@@ -26,6 +26,7 @@ const iconMap: Record<string, React.ElementType> = {
 };
 
 export default function Skills() {
+  const SITE = useSite();
   const [activeIndex, setActiveIndex] = useState<number | null>(null);
 
   return (

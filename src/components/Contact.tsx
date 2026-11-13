@@ -5,8 +5,10 @@ import { motion, AnimatePresence } from "framer-motion";
 import { Send, CheckCircle2, AlertCircle, Loader2 } from "lucide-react";
 import ScrollReveal from "./ScrollReveal";
 import emailjs from "@emailjs/browser";
+import { useSite } from "@/components/site-context";
 
 export default function Contact() {
+  const SITE = useSite();
   const [formState, setFormState] = useState({
     name: "",
     email: "",
@@ -47,7 +49,7 @@ export default function Contact() {
 
     try {
       await Promise.all([
-        emailjs.send(serviceId, templateId, { ...params, to_email: "ritikkumar12bicbly@gmail.com" }, publicKey),
+        emailjs.send(serviceId, templateId, { ...params, to_email: SITE.email }, publicKey),
         emailjs.send(serviceId, templateId, { ...params, to_email: formState.email }, publicKey),
       ]);
       setSubmitted(true);

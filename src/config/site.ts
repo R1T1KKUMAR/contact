@@ -115,4 +115,14 @@ export const SITE = {
     { name: "Framer Motion", category: "Frontend" },
     { name: "Git", category: "DevOps" },
   ],
-  };
+  repos: [
+    { name: "blog-writer-ai", stars: 0, forks: 0, language: "TypeScript", description: "AI-powered blog writing tool" },
+    { name: "jolt", stars: 0, forks: 0, language: "TypeScript", description: "Full-stack application" },
+    { name: "MacQuiz", stars: 0, forks: 3, language: "JavaScript", description: "macOS quiz application" },
+    { name: "voice_agent", stars: 0, forks: 0, language: "Python", description: "Voice AI agent" },
+    { name: "NIDS", stars: 0, forks: 0, language: "Python", description: "Network Intrusion Detection System" },
+    { name: "LMS", stars: 0, forks: 0, language: "HTML", description: "Learning Management System for Harrow School" },
+  ],
+};
+
+export type SiteData = typeof SITE;

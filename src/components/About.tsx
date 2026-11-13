@@ -3,43 +3,45 @@
 import { motion } from "framer-motion";
 import { MapPin, GraduationCap, Briefcase, Target, Heart } from "lucide-react";
 import ScrollReveal from "./ScrollReveal";
-import { SITE } from "@/config/site";
-
-const cards = [
-  {
-    icon: GraduationCap,
-    title: "Education",
-    content: SITE.education.degree,
-    subtitle: `${SITE.education.university}, ${SITE.education.location}`,
-    meta: SITE.education.period,
-  },
-  {
-    icon: MapPin,
-    title: "Location",
-    content: SITE.about.location,
-    subtitle: "Available for remote work",
-  },
-  {
-    icon: Briefcase,
-    title: "Experience",
-    content: "Building production apps",
-    subtitle: "Full-stack & AI development",
-  },
-  {
-    icon: Target,
-    title: "Current Focus",
-    content: SITE.about.focus,
-    subtitle: "Exploring cutting-edge AI technologies",
-  },
-  {
-    icon: Heart,
-    title: "Values",
-    content: SITE.about.values.join(" · "),
-    subtitle: "Engineering excellence",
-  },
-];
+import { useSite } from "@/components/site-context";
 
 export default function About() {
+  const SITE = useSite();
+
+  const cards = [
+    {
+      icon: GraduationCap,
+      title: "Education",
+      content: SITE.education.degree,
+      subtitle: `${SITE.education.university}, ${SITE.education.location}`,
+      meta: SITE.education.period,
+    },
+    {
+      icon: MapPin,
+      title: "Location",
+      content: SITE.about.location,
+      subtitle: "Available for remote work",
+    },
+    {
+      icon: Briefcase,
+      title: "Experience",
+      content: "Building production apps",
+      subtitle: "Full-stack & AI development",
+    },
+    {
+      icon: Target,
+      title: "Current Focus",
+      content: SITE.about.focus,
+      subtitle: "Exploring cutting-edge AI technologies",
+    },
+    {
+      icon: Heart,
+      title: "Values",
+      content: SITE.about.values.join(" · "),
+      subtitle: "Engineering excellence",
+    },
+  ];
+
   return (
     <section id="about" className="relative py-16 md:py-24 lg:py-32">
       <div className="mx-auto max-w-7xl px-6">
