@@ -16,12 +16,28 @@ const SUPABASE_SERVICE_ROLE_KEY = process.env.SUPABASE_SERVICE_ROLE_KEY;
 
 export const supabaseConfigured = Boolean(SUPABASE_URL && SUPABASE_SERVICE_ROLE_KEY);
 
+/**
+ * Users often paste a deeper URL (e.g. ".../rest/v1" or ".../storage/v1")
+ * into SUPABASE_URL. The SDK appends "/storage/v1" etc. itself, so any
+ * suffix breaks every request. Normalize down to the bare project URL.
+ */
+function normalizeSupabaseUrl(raw: string): string {
+  return raw
+    .trim()
+    .replace(/\/+(rest|storage|auth|realtime|functions)\/v1.*$/i, "")
+    .replace(/\/+$/, "");
+}
+
 let client: SupabaseClient | null = null;
 
 function getSupabase(): SupabaseClient | null {
   if (!supabaseConfigured) return null;
   if (!client) {
-    client = createClient(SUPABASE_URL!, SUPABASE_SERVICE_ROLE_KEY!, {
+    const url = normalizeSupabaseUrl(SUPABASE_URL!);
+    if (url !== SUPABASE_URL!.trim()) {
+      console.warn(`[site-data] SUPABASE_URL had extra path, normalized to: ${url}`);
+    }
+    client = createClient(url, SUPABASE_SERVICE_ROLE_KEY!, {
       auth: { persistSession: false },
     });
   }
@@ -48,9 +64,14 @@ export const getSiteContent = unstable_cache(
         .eq("id", "site")
         .maybeSingle();
 
-      if (error || !data) return SITE;
+      if (error) {
+        console.error("[site-data] failed to read site_content:", error.message);
+        return SITE;
+      }
+      if (!data) return SITE;
       return withDefaults(data.data);
-    } catch {
+    } catch (err) {
+      console.error("[site-data] Supabase unreachable:", err instanceof Error ? err.message : err);
       return SITE;
     }
   },
